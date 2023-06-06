@@ -1,4 +1,7 @@
+import { response } from "express";
 import { cartModel } from "../../dao/models/cart.model.js";
+import { productModel } from "../models/product.model.js";
+import { products } from "../../utils.js";
 
 class CartService{
     constructor(){
@@ -6,14 +9,34 @@ class CartService{
     }
 
     async addCart() {
-        let product = []
-        return await this.model.create({products: product})
+        return await this.model.create({})
     }
 
     async getCartById(cartId){
-        return await this.model.find({_id: cartId})
+        return await this.model.find({_id: cartId}).populate('products.product')
     }
-    
+
+    async getAllCarts(){
+        return await this.model.find()
+    }
+
+    async addProduct (cartId, item){      
+        // if (!cartId || !item) {
+        // throw new Error ('one or both required fields are missing')
+        // }
+        // else{
+            let cart = await cartModel.findOne({_id: cartId})
+            cart.products.push({product: item.pid, quantity: item.quantity})            
+           return await cartModel.updateOne({_id: cartId}, cart)           
+            
+        //}
+        //const cartObjectId = mongoose.Types.ObjectId(cartId)
+        //let valor = this.model.updateOne({"_id":cartObjectId}, {$push:{"products":product}})
+        // console.log(valor)
+       // return await this.model.updateOne({"_id":cartObjectId}, {$push:{"products":product}})
+        
+    }
+
     // async getAllproducts(limit){
 
     //     let query = this.model.find();

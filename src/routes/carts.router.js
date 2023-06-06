@@ -31,6 +31,15 @@ cartRouter.get('/:cid', async (req, res) => {
     }
 })
 
+cartRouter.get('/', async (req, res)=>{
+    try{
+        let carts = await cartService.getAllCarts()
+        res.status(200).send(carts)
+    }catch (err){
+        res.status(500).send(err)
+    }
+})
+
 // cartRouter.post('/:cid/product/:pid', async (req, res) => {
 //     try {
 //         let cid = req.params.cid
@@ -55,17 +64,21 @@ cartRouter.put('/:cid/product/:pid', async (req, res) => {
     try {
         let cid = req.params.cid
         let pid = req.params.pid
-        let cuerpo = { "product": parseInt(pid), "quantity": req.body.quantity }
+        let producto = { "pid": pid, "quantity": req.body.quantity }
+        
 
+        console.log(producto.pid, producto.quantity)
         //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
-        let addedProduct = await cartService.addProduct(parseInt(cid), cuerpo)
-        if (addedProduct === 404) {
-            res.status(404).send({ error: "El producto no existe" })
-        } else if (!addedProduct) {
-            res.status(404).send({ error: "Carrito inexistente" })
-        } else {
-            res.send(addedProduct)
-        }
+        let addedProduct = await cartService.addProduct(cid, producto)
+        console.log(addedProduct)
+        // if (addedProduct === 404) {
+        //     res.status(404).send({ error: "El producto no existe" })
+        // } else if (!addedProduct) {
+        //     res.status(404).send({ error: "Carrito inexistente" })
+        // } else {
+        //     res.send(addedProduct)
+        // } 
+        res.status(200).send(addedProduct)
     }
     catch (err) {
         res.send(err)
