@@ -9,19 +9,26 @@ const productRouter = Router();
 
 productRouter.get('/', async (req, res) => {
     try {
-        let productos = await productService.getAllproducts()
-        let limit = req.query.limit
-        if (!limit || parseInt(limit) >= productos.length) {
-            res.send(productos)
-        } else if (parseInt(limit) <= 0) {
-            res.send('<h4 style="color: red; text-transform: uppercase"> el limite de productos no puede ser igual o menor a cero</h4>')
-        } else if (isNaN(+limit)) {
-            res.send(`Seleccione un número entre 0 y ${productos.length} para limitar la cantidad de productos mostrados`)
+        //let productos = await pm.getAllproducts()
+        let limit = parseInt(req.query.limit)
+        let productos
+        if (limit) {
+            productos = await productService.getAllproducts(limit);
         } else {
-            let newProductList = productos.splice(0, limit)
-            res.send(newProductList)
+            productos = await productService.getAllproducts();
         }
-    }
+    //     if (!limit || parseInt(limit) >= productos.length) {
+    //         res.send(productos)
+    //     } else if (parseInt(limit) <= 0) {
+    //         res.send('<h4 style="color: red; text-transform: uppercase"> el limite de productos no puede ser igual o menor a cero</h4>')
+    //     } else if (isNaN(+limit)) {
+    //         res.send(`Seleccione un número entre 0 y ${productos.length} para limitar la cantidad de productos mostrados`)
+    //     } else {
+    //         let newProductList = productos.splice(0, limit)
+    //         res.send(newProductList)
+    //     }
+        res.status(200).send(productos)
+     }
     catch (err) {
         res.send(err)
     }
@@ -30,7 +37,8 @@ productRouter.get('/', async (req, res) => {
 productRouter.get("/:pid", async (req, res) => {
     try {
         let pid = req.params.pid
-        let producto = await pm.getProductById(parseInt(pid))
+        //let producto = await pm.getProductById(parseInt(pid))
+        let producto = await productService.getProduct(pid)
         if (producto === false) {
             res.status(400).send({ error: 'ID no encontrado' })
         } else {
@@ -45,6 +53,7 @@ productRouter.get("/:pid", async (req, res) => {
 productRouter.post("/", async (req, res) => {
     try {
         console.log(req.body)
+        //let value = await pm.addProduct(req.body)
         let value = await productService.addProduct(req.body)
         if (value === false) {
             res.status(400).send({ status: 400, error: 'Campos incompletos o incorrectos' })
@@ -52,6 +61,7 @@ productRouter.post("/", async (req, res) => {
             res.status(400).send({ status: 400, error: 'El campo code ya se encuentra cargado para otro producto' })
         }   
         else {
+            //socketServer.emit('update', await pm.getproducts())
             socketServer.emit('update', await productService.getAllproducts())
             res.status(201).send(value)
         }
@@ -64,7 +74,8 @@ productRouter.post("/", async (req, res) => {
 productRouter.put("/:pid", async (req, res) => {
     try {
         let pid = req.params.pid
-        let productEdit = await pm.updateProduct(pid, req.body)
+        //let productEdit = await pm.updateProduct(pid, req.body)
+        let productEdit = await productService.updateProduct(pid, req.body)
         if (!productEdit) {
             res.status(400).send({ error: 'Uno o más campos no son válidos' })
         } else if (productEdit === 400) {
@@ -73,7 +84,8 @@ productRouter.put("/:pid", async (req, res) => {
             res.status(404).send({ error: 'El id indicado no corresponde a un producto valido' })
         }
         else{
-            socketServer.emit('update', await pm.getProducts())
+            //socketServer.emit('update', await pm.getproducts())
+            socketServer.emit('update', await productService.getAllproducts())
             res.send(productEdit)
         }
     }
@@ -85,17 +97,19 @@ productRouter.put("/:pid", async (req, res) => {
 productRouter.delete("/:pid", async (req, res) => {
     try {
         let pid = req.params.pid
-        let productDelete = await pm.deleteProduct(pid)
+        //let productDelete = await pm.deleteProduct(pid)
+        let productDelete = await productService.deleteProduct(pid)
         if (!productDelete) {
             res.status(404).send({ error: 'El id indicado no corresponde a un producto valido' })
         }        
         else{
-            socketServer.emit('update', await pm.getProducts())
+            //socketServer.emit('update', await pm.getproducts())
+            socketServer.emit('update', await productService.getAllproducts())
             res.send(`se borró producto con id: ${pid}`)
         }
     }
     catch (err) {
-        res.send(err)
+        res.status(500).send(err)
     }
 })
 

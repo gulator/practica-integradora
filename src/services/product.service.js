@@ -4,21 +4,34 @@ class ProductService{
     constructor(){
         this.model = productModel;
     }
-    async getAllproducts(){
-        
-        return await this.model.find().lean()
+    async getAllproducts(limit){
+
+        let query = this.model.find();
+    if (limit) {
+        query = query.limit(limit);
+    }
+    return await query.lean();
+    }
+
+    async getProduct(productId){
+        return await this.model.find({_id: productId})
     }
 
     async addProduct(product){
-        console.log(product)
         return await this.model.create(product)
     }
 
-    async removeProduct (productId){
-        return await this.model.findOneAndDelete( { _id: productId})
+    async deleteProduct (productId){
+        if (!productId){
+            throw new Error('Faltan Campos')
+        }
+        return await this.model.deleteOne( { _id: productId})
     }
 
-    async editProduct (productId, data){
+    async updateProduct (productId, data){
+        if (!productId){
+            throw new Error('Faltan Campos')
+        }
         return await this.model.updateOne( {_id: productId}, data)
     }
 }
