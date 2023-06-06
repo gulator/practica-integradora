@@ -1,7 +1,7 @@
 import express from 'express';
 import handlebars from 'express-handlebars'
 import { productRouter } from './routes/products.router.js';
-import { cartRouter } from './routes/carts.routes.js';
+import { cartRouter } from './routes/carts.router.js';
 import { viewsRouter } from './routes/views.routes.js';
 import { products, configSocketServer } from './utils.js';
 import { Server } from 'socket.io';
