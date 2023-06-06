@@ -65,12 +65,8 @@ cartRouter.put('/:cid/product/:pid', async (req, res) => {
         let cid = req.params.cid
         let pid = req.params.pid
         let producto = { "pid": pid, "quantity": req.body.quantity }
-        
-
-        console.log(producto.pid, producto.quantity)
         //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
         let addedProduct = await cartService.addProduct(cid, producto)
-        console.log(addedProduct)
         // if (addedProduct === 404) {
         //     res.status(404).send({ error: "El producto no existe" })
         // } else if (!addedProduct) {
@@ -90,12 +86,9 @@ cartRouter.delete('/:cid/product/:pid', async (req, res) => {
     try {
         let cid = req.params.cid
         let pid = req.params.pid
-        let deleteProduct = await cm.deleteProduct(parseInt(cid), parseInt(pid))
-        if (deleteProduct === 404) {
-            res.status(404).send({ error: "id de carrito inexistente o id de producto no existe en el carrito" })
-        } else {
-            res.send(deleteProduct)
-        }
+        // let deleteProduct = await cm.deleteProduct(parseInt(cid), parseInt(pid))
+        let deleteProduct = await cartService.deleteProduct(cid, pid)
+            res.status(204).send(deleteProduct)
     } catch (err) {
         res.send(err)
     }

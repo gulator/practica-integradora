@@ -25,9 +25,35 @@ class CartService{
         // throw new Error ('one or both required fields are missing')
         // }
         // else{
-            let cart = await cartModel.findOne({_id: cartId})
-            cart.products.push({product: item.pid, quantity: item.quantity})            
-           return await cartModel.updateOne({_id: cartId}, cart)           
+            const isInCart = await cartModel.findOne({
+                _id: cartId,
+                'products.product': { $in: [item.pid]
+                }
+            })
+            if (isInCart){
+                return await cartModel.findOneAndUpdate(
+                    {
+                      _id: cartId,
+                      'products.product': item.pid,
+                    },
+                    {
+                      $inc: { 'products.$.quantity': item.quantity },
+                    },
+                    { new: true }
+                  );
+            }
+            else{
+                let cart = await cartModel.findOne({_id: cartId})
+                cart.products.push({product: item.pid, quantity: item.quantity})
+                return await cartModel.updateOne({_id: cartId}, cart)           
+                
+            }
+
+
+            
+
+
+            
             
         //}
         //const cartObjectId = mongoose.Types.ObjectId(cartId)
@@ -54,7 +80,21 @@ class CartService{
     //     return await this.model.create(product)
     // }
 
-    // async deleteProduct (productId){
+    async deleteProduct (cartId, productId){
+        const isInCart = await cartModel.findOne({
+            _id: cartId,
+            'products.product': { $in: [productId]
+            }
+        })
+        if (isInCart){
+            const cart = await cartModel.findOneAndUpdate(
+                { _id: cartId },
+                { $pull: { products: { product: productId } } },
+                { new: true }
+              );
+    }
+}
+
     //     if (!productId){
     //         throw new Error('Faltan Campos')
     //     }
