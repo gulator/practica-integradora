@@ -107,7 +107,13 @@ class CartService{
     //     }
     //     return await this.model.updateOne( {_id: productId}, data)
     // }
+
+    async deleteCart(cartId){
+        return await this.model.deleteOne( { _id: cartId})
+    }
 }
+
+
 
 const cartService = new CartService()
 

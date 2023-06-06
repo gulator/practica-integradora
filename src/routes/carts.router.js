@@ -95,5 +95,15 @@ cartRouter.delete('/:cid/product/:pid', async (req, res) => {
 
 })
 
+cartRouter.delete('/:cid', async (req, res) => {
+    try{
+        let cid = req.params.cid
+        let deletedCart = await cartService.deleteCart(cid)
+        res.status(204).send(deletedCart)
+    }catch(err){
+        res.status(500).send(err)
+    }
+})
+
 
 export { cartRouter }
