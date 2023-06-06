@@ -1,6 +1,6 @@
 import { Router } from "express";
-import ProductManager from "../modules/productManager.js";
-import productService from "../services/product.service.js";
+import ProductManager from "../dao/modules/productManager.js";
+import productService from "../dao/services/product.service.js";
 import { products } from "../utils.js";
 import { socketServer } from "../app.js";
 const pm = new ProductManager('./products.json')
