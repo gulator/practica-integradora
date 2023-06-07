@@ -8,6 +8,8 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 
 const app = express();
+const mensajes = []
+export { mensajes }
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,11 +29,11 @@ const environment = async () => {
   );
 };
 
+environment()
 const httpServer = app.listen(8080, () => {
   console.log("listening to port 8080");
 });
 
-environment()
 
 const socketServer = configSocketServer(httpServer);
 

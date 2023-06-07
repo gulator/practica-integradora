@@ -2,7 +2,9 @@ import {Router} from 'express';
 import handlebars from 'express-handlebars';
 import ProductManager from "../dao/modules/productManager.js";
 import productService from "../dao/services/product.service.js";
+import messageService from '../dao/services/message.service.js';
 import { products } from '../utils.js';
+import { mensajes } from '../app.js';
 import { socketServer } from '../app.js';
 const pm = new ProductManager('./products.json')
 
@@ -26,6 +28,11 @@ viewsRouter.get('/realtimeproducts',async (req,res)=>{
     let newProductList = await productService.getAllproducts()
     products.push(newProductList)
     res.render('realTimeProducts',{newProductList})
+})
+
+viewsRouter.get('/chat', async (req, res)=>{
+    let messageList = await messageService.getAllMessages()
+    res.render('chat', {messageList})
 })
 
 export { viewsRouter }

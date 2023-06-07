@@ -41,3 +41,34 @@ ul{
 .code{
     font-size: 12px;
 }
+#chat{
+    margin:0;
+    padding:0
+}
+
+#title{
+    margin-left: 20px;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+#history{
+    box-sizing: border-box;
+    border: 1px solid grey;
+    border-radius: 8px;
+    padding: 10px;
+    height:90vh;
+}
+.input-container{
+    display: inline;
+}
+#msj{
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 10px;
+    position: absolute;
+    bottom: 8;
+    margin-bottom: 2px;
+    margin-top: 5px;
+    width: 99%;
+}
