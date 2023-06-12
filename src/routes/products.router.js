@@ -10,12 +10,32 @@ const productRouter = Router();
 productRouter.get('/', async (req, res) => {
     try {
         //let productos = await pm.getAllproducts()
-        let limit = parseInt(req.query.limit)
-        let productos
-        if (limit) {
-            productos = await productService.getAllproducts(limit);
-        } else {
-            productos = await productService.getAllproducts();
+        let {limit, page, sort, category} = req.query;
+        const newProductList = await productService.getAllproducts(limit, page, sort, category);
+        let prevL = 1
+        let nextL =2
+        res.status(200).send({
+            status: "success",
+            payload: newProductList.docs,
+            totalDocs: newProductList.totalDocs,
+            limit: newProductList.limit,
+            totalPages: newProductList.totalPages,
+            page: newProductList.page,
+            pagingCounter: newProductList.pagingCounter,
+            hasPrevPage: newProductList.hasPrevPage,
+            hasNextPage: newProductList.hasNextPage,
+            prevPage: newProductList.prevPage,
+            nextPage: newProductList.nextPage,
+            prevLink: prevL,
+            nextLink: nextL
+          })
+
+        // let limit = parseInt(req.query.limit)
+        // let productos
+        // if (limit) {
+        //     productos = await productService.getAllproducts(limit);
+        // } else {
+        //     productos = await productService.getAllproducts();
         }
     //     if (!limit || parseInt(limit) >= productos.length) {
     //         res.send(productos)
@@ -27,8 +47,7 @@ productRouter.get('/', async (req, res) => {
     //         let newProductList = productos.splice(0, limit)
     //         res.send(newProductList)
     //     }
-        res.status(200).send(productos)
-     }
+     
     catch (err) {
         res.send(err)
     }

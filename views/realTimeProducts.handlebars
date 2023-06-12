@@ -1,13 +1,14 @@
 <div class="cardsContainer" id="productos">
-    {{#each newProductList}}
+    {{#each result}}
     <div class="card">
         <ul>
             <li class="title">{{this.title}}</li>
-            <li class="description">{{this.description}}</li>
-            <li class="price">Precio:${{this.price}}</li>
-            <li class="stock">Stock:{{this.stock}}</li>
-            <li class="code">Código:{{this.code}} / id: {{this._id}}</li>
+            <li class="description">Color:{{payload.color}} marca:{{this.payload.brand}}</li>
+            <li class="price">${{this.payload.price}}</li>
+            <li class="stock">Stock:{{this.payload.stock}}</li>
+            <li class="code">Código:{{this.payload.code}} / id: {{this.payload._id}}</li>
         </ul>
+        <button>Agregar</button>
     </div>
     {{/each}}
 </div>

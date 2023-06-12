@@ -1,0 +1,37 @@
+<div class="container col-8">
+  <div class="head-carrito">
+    <h1>Tu carrito</h1>
+    <div id="del-carrito "class="del-carrito">
+      <i class="fa-regular fa-trash-can fa-lg"></i>
+      <p>Vaciar Carrito</p>
+    </div>
+  </div>
+  <table class="table table-striped dark">
+    <thead>
+      <tr>
+        <th scope="col">codigo</th>
+        <th scope="col">ID</th>
+        <th scope="col">Producto</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">P. Unitario</th>
+        <th class="delField" scope="col">Quitar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each resultado}}
+        <tr>
+          <th scope="row">{{this.product.code}}</th>
+          <td class="idProduct">{{this.product._id}}</td>
+          <td>{{this.product.title}}</td>
+          <td><input
+              class="input-cart"
+              type="number"
+              value="{{this.quantity}}"
+            /><i class="fa-solid fa-arrows-rotate"></i></td>
+          <td>${{this.product.price}}</td>
+          <td class="delField"><i class="fa-solid fa-rectangle-xmark"></i></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

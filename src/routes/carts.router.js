@@ -9,7 +9,9 @@ const cartRouter = Router();
 cartRouter.post('/', async (req, res) => {
     try {
         //res.status(201).send(await cm.addCart())
-        res.status(201).send(await cartService.addCart())
+        let newCart = await cartService.addCart()
+        console.log (newCart._id)
+        res.status(201).send(newCart._id)
     }
     catch (err) {
         res.send(err)
@@ -60,24 +62,45 @@ cartRouter.get('/', async (req, res)=>{
 //     }
 // })
 
-cartRouter.put('/:cid/product/:pid', async (req, res) => {
+cartRouter.post('/:cid/product/:pid', async (req, res) => {
     try {
         let cid = req.params.cid
         let pid = req.params.pid
         let producto = { "pid": pid, "quantity": req.body.quantity }
         //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
         let addedProduct = await cartService.addProduct(cid, producto)
-        // if (addedProduct === 404) {
-        //     res.status(404).send({ error: "El producto no existe" })
-        // } else if (!addedProduct) {
-        //     res.status(404).send({ error: "Carrito inexistente" })
-        // } else {
-        //     res.send(addedProduct)
-        // } 
+        
         res.status(200).send(addedProduct)
     }
     catch (err) {
         res.send(err)
+    }
+})
+
+cartRouter.put('/:cid/products/:pid', async (req, res) => {
+    try {
+        let cid = req.params.cid
+        let pid = req.params.pid
+        let producto = { "pid": pid, "quantity": req.body.quantity }
+        //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
+        let editedQuantity = await cartService.editQuantity(cid, producto)
+        
+        res.status(200).send(editedQuantity)
+    }
+    catch (err) {
+        res.send(err)
+    }
+})
+
+cartRouter.put ('/:cid', async (req, res)=>{
+    try{
+        let cid = req.params.cid
+        let producto = req.body
+        let carrito = await cartService.editCart(cid, producto)
+        res.status(200).send(carrito)
+    }
+    catch(err){
+        res.status(500).send(err)
     }
 })
 

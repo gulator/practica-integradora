@@ -6,28 +6,90 @@ import messageService from '../dao/services/message.service.js';
 import { products } from '../utils.js';
 import { mensajes } from '../app.js';
 import { socketServer } from '../app.js';
+import cartService from '../dao/services/cart.service.js';
 const pm = new ProductManager('./products.json')
 
 const viewsRouter = Router()
 
-viewsRouter.get('/', async (req, res)=>{
-
-    let limit = parseInt(req.query.limit);
-    let newProductList;
-    if (limit) {
-        //newProductList = await pm.getproducts(limit);
-        newProductList = await productService.getAllproducts(limit);
-    } else {
-        newProductList = await productService.getAllproducts();
+viewsRouter.get('/products', async (req, res)=>{
+    
+    try{
+        let {limit, page, sort, brand} = req.query;
+    const newProductList = await productService.getAllproducts(limit, page, sort, brand);
+    
+    let result = {
+        status: "success",
+        payload: newProductList.docs,
+        totalDocs: newProductList.totalDocs,
+        limit: newProductList.limit,
+        totalPages: newProductList.totalPages,
+        page: newProductList.page,
+        pagingCounter: newProductList.pagingCounter,
+        hasPrevPage: newProductList.hasPrevPage,
+        hasNextPage: newProductList.hasNextPage,
+        prevPage: newProductList.prevPage,
+        nextPage: newProductList.nextPage,
+        prevLink: newProductList.links + `page=${newProductList.prevPage}`,
+        nextLink: newProductList.links + `page=${newProductList.nextPage}`
+      }
+      
+      res.render('home', result)
     }
-    res.render('home', {newProductList})
+
+    catch(err){
+        res.status(500).send(err)
+    }
+    
+    
 })
+
+viewsRouter.get('/carts/:cid', async (req, res)=>{
+    
+    try{
+        let cid = req.params.cid
+        let carrito = await cartService.getCartById(cid)
+        let resultado = carrito[0].products
+        // res.send(carrito)
+        res.render('carts', {resultado})
+    }
+    catch(err){
+        res.status(500).send(err)
+    }
+})
+
 
 viewsRouter.get('/realtimeproducts',async (req,res)=>{
     //let newProductList = await pm.getProducts()
-    let newProductList = await productService.getAllproducts()
-    products.push(newProductList)
-    res.render('realTimeProducts',{newProductList})
+    // let newProductList = await productService.getAllproducts()
+    // products.push(newProductList)
+    // res.render('realTimeProducts',{newProductList})
+    try{
+        let {limit, page, sort, category} = req.query;
+    const newProductList = await productService.getAllproducts(limit, page, sort, category);
+    let prevL = 1
+    let nextL =2
+    let result = {
+        status: "success",
+        payload: newProductList.docs,
+        totalDocs: newProductList.totalDocs,
+        limit: newProductList.limit,
+        totalPages: newProductList.totalPages,
+        page: newProductList.page,
+        pagingCounter: newProductList.pagingCounter,
+        hasPrevPage: newProductList.hasPrevPage,
+        hasNextPage: newProductList.hasNextPage,
+        prevPage: newProductList.prevPage,
+        nextPage: newProductList.nextPage,
+        prevLink: prevL,
+        nextLink: nextL
+      }
+      
+      res.render('realtimeproducts', {result})
+    }
+
+    catch(err){
+        res.status(500).send(err)
+    }
 })
 
 viewsRouter.get('/chat', async (req, res)=>{
