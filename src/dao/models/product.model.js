@@ -26,15 +26,6 @@ const productSchema = new mongoose.Schema({
   stock: {
     type: Number,
     required: true,
-  },
-  available: {
-    type: Boolean,
-    default: true,
-    validate: {
-      validator: function () {
-        return this.stock > 0;
-      }
-    }
   }
 });
 
