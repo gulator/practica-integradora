@@ -25,13 +25,11 @@ const ordenes = async ()=>{
     //   ])
        
     //   console.log({'payload':orders.docs, ...orders}),
-    let productos = await productModel.aggregate([
-        {
-          $addFields: {
-            available: { $gt: ['$stock', 0] } // Set 'available' to true if 'stock' is greater than 0
-          }
-        }
-      ])
+    let productos = await productModel.updateMany(
+      { }, // Empty filter to match all documents
+      { $set: { available: { $gt: ['$stock', 0] } } }, // Set 'available' to true if 'stock' is greater than 0
+      { multi: true } // Update multiple documents
+    )
 //     let productos = await productModel.insertMany (
 //         [
 //             {title: 'Remera Asics Camel Microfibra', price:7450, brand:'Asics', color:'Camel', code: '127578', stock: 15},

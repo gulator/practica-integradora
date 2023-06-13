@@ -10,7 +10,6 @@ cartRouter.post('/', async (req, res) => {
     try {
         //res.status(201).send(await cm.addCart())
         let newCart = await cartService.addCart()
-        console.log (newCart._id)
         res.status(201).send(newCart._id)
     }
     catch (err) {

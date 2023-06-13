@@ -14,8 +14,8 @@ const viewsRouter = Router()
 viewsRouter.get('/products', async (req, res)=>{
     
     try{
-        let {limit, page, sort, brand} = req.query;
-    const newProductList = await productService.getAllproducts(limit, page, sort, brand);
+        let {limit, page, sort, brand, stock} = req.query;
+    const newProductList = await productService.getAllproducts(limit, page, sort, brand, stock);
     
     let result = {
         status: "success",
@@ -64,8 +64,8 @@ viewsRouter.get('/realtimeproducts',async (req,res)=>{
     // products.push(newProductList)
     // res.render('realTimeProducts',{newProductList})
     try{
-        let {limit, page, sort, category} = req.query;
-    const newProductList = await productService.getAllproducts(limit, page, sort, category);
+        let {limit, page, sort, brand, stock} = req.query;
+    const newProductList = await productService.getAllproducts(limit, page, sort, brand, stock);
     let prevL = 1
     let nextL =2
     let result = {

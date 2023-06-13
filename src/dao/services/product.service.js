@@ -4,14 +4,33 @@ class ProductService {
   constructor() {
     this.model = productModel;
   }
-  async getAllproducts(limit = 10, page = 1, sort="sin", brand="nada") {
+  async getAllproducts(limit = 10, page = 1, sort="sin", brand="nada", stock) {
     // console.log(`lim: ${limit}, page: ${page}, sorting: ${sort}, category: ${category}`)
-    
+    console.log(brand)
     let filtro = {}
     if (brand !== "nada"){
         filtro = {brand}
+        if (stock === "true"){
+          filtro = {brand, stock: {$gt: 0}}
+        }
+        else if (stock === "false"){
+          filtro = {brand, stock: {$eq: 0}}
+        }
+        else{
+          filtro = {brand, stock: {$gte: 0}}
+        }
+    }
+    else if (stock === "true"){
+      filtro = {stock: {$gt: 0}}
+    }
+    else if (stock === "false"){
+      filtro = {stock: {$eq: 0}}
+    }
+    else{
+      filtro = {stock: {$gte: 0}}
     }
     let queryResult
+    console.log(filtro)
     if (sort === "sin"){
         queryResult = await productModel.paginate(filtro, {page, limit, lean:true })
     }else{
@@ -21,18 +40,33 @@ class ProductService {
     let links
 
     if (sort === "sin"){
-        if (brand === "nada"){
-            links = `?limit=${limit}&`
+        if (brand === "nada"){            
+            if (stock === undefined){
+              links = `?limit=${limit}&`
+            }
+            else{
+              links = `?limit=${limit}&stock=${stock}&`
+            }
         }
         else{
-            links = `?limit=${limit}&brand=${brand}&`
+            links = `?limit=${limit}&brand=${brand}&stock=${stock}&`
         }
     }
     else if(brand === "nada" || !brand ){
+      if (stock === undefined){
         links = `?limit=${limit}&sort=${sort}&`
+      }
+      else{
+        links = `?limit=${limit}&sort=${sort}&stock=${stock}&`
+      }        
     }
     else{
+      if (stock === undefined){
         links = `?limit=${limit}&brand=${brand}&sort=${sort}&`
+      }
+      else{
+        links = `?limit=${limit}&brand=${brand}&sort=${sort}&stock=${stock}&`
+      } 
     }
     return {links, ...queryResult}
 

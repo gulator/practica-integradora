@@ -67,8 +67,9 @@ for (let n of borrar) {
     // console.log(pid)
     fetch(`/api/carts/${cid}/product/${pid}`, {
       method: "DELETE",
-    });
-    location.reload(true);
+    }).then(()=>{
+      location.reload(true)
+  })
   });
 }
 
