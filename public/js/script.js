@@ -90,7 +90,7 @@ for (let n of editarCantidad) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ quantity: quantity }),
-    })
+    }) 
     .then(()=>{
         location.reload(true)
     })
