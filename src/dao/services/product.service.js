@@ -6,7 +6,6 @@ class ProductService {
   }
   async getAllproducts(limit = 10, page = 1, sort="sin", brand="nada", stock) {
     // console.log(`lim: ${limit}, page: ${page}, sorting: ${sort}, category: ${category}`)
-    console.log(brand)
     let filtro = {}
     if (brand !== "nada"){
         filtro = {brand}
@@ -30,7 +29,6 @@ class ProductService {
       filtro = {stock: {$gte: 0}}
     }
     let queryResult
-    console.log(filtro)
     if (sort === "sin"){
         queryResult = await productModel.paginate(filtro, {page, limit, lean:true })
     }else{

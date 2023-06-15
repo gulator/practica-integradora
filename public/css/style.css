@@ -1,6 +1,9 @@
 *{
     list-style: none;
 }
+body{
+     background: linear-gradient(to bottom, #00f260, #0575e6);
+}
 .logo-nav{
     height: 80px;
     padding: 10px;
@@ -26,12 +29,38 @@ li{
 td{
     vertical-align: middle !important;
 }
-
-.cardsContainer{
+.cards-main-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80vw;
+    margin: auto;
+}
+.cards-container{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 
+}
+.cont-filtros{
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 80px;
+    padding: 20px 10px 10px 10px;
+
+}
+.active .page-link{
+    background-color: #03B4A3 !important;
+}
+
+.filtros{
+    width: 80vw;
+}
+.filtros ul{
+    display: flex;
+    justify-content: center;
 }
 .card{
     width: 300px;
@@ -139,7 +168,7 @@ td{
 .btn{
     cursor: pointer;
     height: 40px;
-    width: 80px;
+    width: 90px;
     background: linear-gradient(to top, #347c68, #99f2c8);
     border: none;
     border-radius: 8px;

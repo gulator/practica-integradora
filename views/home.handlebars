@@ -1,44 +1,94 @@
-<div class="cardsContainer">
-  {{#each payload}}
-    <div class="card">
-      <div>
-        <ul>
-          <li class="title">{{this.title}}</li>
-          <li class="description">Color:{{this.color}} marca:{{this.brand}}</li>
-          <li class="price">${{this.price}}</li>
-          <li class="stock">Stock:{{this.stock}}</li>
-          <li class="code">Código:{{this.code}}</li>
-          <li class="code">id: {{this._id}}</li>
-        </ul>        
-        <button class="btn">Agregar</button>        
-      </div>
-
+<div class="cards-main-container">
+  <div class="cont-filtros">
+    <div class="filtros">
+      <ul>
+        <li>
+          <select id="limit-select" class="form-select">
+            <option selected>Cant. por página</option>
+            <option value="10">10</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+          </select>
+        </li>
+        <li>
+          <select id="brand-select" class="form-select">
+            <option selected>Selecciona por marca</option>
+            <option value="none">Todas las marcas</option>
+            <option value="Adidas">Adidas</option>
+            <option value="Asics">Asics</option>
+            <option value="Nike">Nike</option>
+            <option value="Puma">Puma</option>
+            <option value="Reebok">Reebok</option>
+          </select>
+        </li>
+        <li>
+          <select id="stock-select" class="form-select">
+            <option selected>Stock</option>
+            <option value="none">Todos</option>
+            <option value="true">Con Stock</option>
+            <option value="false">Sin Stock</option>
+          </select>
+        </li>
+        <li>
+          <select id="sort-select" class="form-select">
+            <option selected>Por precio</option>
+            <option value="none">Sin filtro</option>
+            <option value="1">Menor Precio</option>
+            <option value="-1">Mayor Precio</option>
+          </select>
+        </li>
+        <li>
+          <button class="btn" id="filters">Filtrar</button>
+        </li>
+      </ul>
     </div>
-  {{/each}}
+  </div>
+  <div class="cards-container">
+    {{#each payload}}
+      <div class="card">
+        <div>
+          <ul>
+            <li class="title">{{this.title}}</li>
+            <li class="description">Color:{{this.color}}
+              marca:{{this.brand}}</li>
+            <li class="price">${{this.price}}</li>
+            <li class="stock">Stock:{{this.stock}}</li>
+            <li class="code">Código:{{this.code}}</li>
+            <li class="code">id: {{this._id}}</li>
+          </ul>
+          <button class="btn">Agregar</button>
+        </div>
+
+      </div>
+    {{/each}}
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      {{#if hasPrevPage}}
+        <li class="page-item">
+          <a class="page-link" href={{prevLink}}>Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link">{{prevPage}}</a></li>
+      {{else}}
+        <li class="page-item disabled">
+          <a class="page-link">Previous</a>
+        </li>
+      {{/if}}
+
+      <li class="page-item active actual"><a
+          id="current-page"
+          class="page-link"
+        >{{page}}</a></li>
+      {{#if hasNextPage}}
+        <li class="page-item"><a class="page-link">{{nextPage}}</a></li>
+        <li class="page-item">
+          <a class="page-link" href={{nextLink}}>Next</a>
+        </li>
+      {{else}}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      {{/if}}
+    </ul>
+  </nav>
 </div>
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-    {{#if hasPrevPage}}
-    <li class="page-item">
-      <a class="page-link" href={{prevLink}}>Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">{{prevPage}}</a></li>
-    {{else}}
-    <li class="page-item disabled">
-      <a class="page-link">Previous</a>
-    </li>
-    {{/if}}
-    
-    <li class="page-item active"><a class="page-link" href="#">{{page}}</a></li>
-    {{#if hasNextPage}}
-    <li class="page-item"><a class="page-link" href="#">{{nextPage}}</a></li>
-    <li class="page-item">
-      <a class="page-link" href={{nextLink}}>Next</a>
-    </li>
-    {{else}}
-    <li class="page-item disabled">
-      <a class="page-link" href="#">Next</a>
-    </li>
-    {{/if}}
-  </ul>
-</nav>
