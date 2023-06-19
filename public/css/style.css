@@ -21,6 +21,41 @@ body{
     border-radius: 15px;
     box-shadow: 4px 4px 10px rgb(0, 44, 58);
 }
+.rojo{
+    background-color: #ae4b55 !important;
+}
+.profile-container{
+    height: 88%;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+.profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 50vh;
+    background-color: #fafafa;
+    border-radius: 15px;
+    box-shadow: 4px 4px 10px rgb(0, 44, 58);
+}
+.profile-info{
+    margin-top: 10px;
+    color: rgb(0, 44, 58);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.profile-img{
+    max-height: 150px;
+    border-radius: 50%;
+}
+.small-icon{
+    max-height: 40px;
+
+}
 .register{
     height: 70vh;
 }

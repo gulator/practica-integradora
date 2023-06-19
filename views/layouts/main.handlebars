@@ -10,7 +10,10 @@
       integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
       crossorigin="anonymous"
     />
-    <script src="https://kit.fontawesome.com/a4f17918d6.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/a4f17918d6.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
@@ -19,11 +22,26 @@
         <img class="logo-nav" src="../img/logo.png" alt="img logo" />
         <ul class="nav justify-content-end">
           <li class="nav-item">
-            <a class="nav-link active" id="productos" aria-current="page" href="#">Productos</a>
-          </li>          
+            <a
+              class="nav-link active"
+              id="productos"
+              aria-current="page"
+              href="#"
+            >Productos</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" id="carrito" href="#">Carrito</a>
           </li>
+          {{#if user}}
+            <li class="nav-item">
+              <img class="profile-img small-icon" src="/img/generic.png" alt="profile image">
+              <a
+                class="nav-link"
+                id="logout"
+                href="/api/users/logout"
+              >Logout</a>
+            </li>
+          {{/if}}
         </ul>
       </nav>
     </header>

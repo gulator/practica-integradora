@@ -1,11 +1,11 @@
-<section>
-    <div id="title"> Deja tu mensaje</div>
-    <div id="history"></div>
-    <div>
-        <input type="text" id="msg">
+<section class="profile-container">
+   <div class="profile">
+    <img class="profile-img" src="/img/generic.png" alt="">
+    <div class="profile-info">
+        <h3>¡Bienvenido {{user.first_name}} {{user.last_name}}!</h3>
+        <p>Tu mail registrado es: {{user.email}}</p>
+        <p>Tenes {{user.age}} años</p>
+        <p>Rol: {{user.role}}</p>        
     </div>
+   </div>
 </section>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
-<script src="socket.io/socket.io.js"></script>
-<script src="js/main.js"></script>

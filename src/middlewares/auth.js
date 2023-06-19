@@ -1,6 +1,13 @@
-export function auth(req, res, next){
-    if (req.session.user === 'usuario' && req.session.admin){
+export function isAuth(req, res, next){
+    if (req.session.user){
         next()
-    }
-    res.status(401).send('no podes acceder a esta seccion')
+    }else{
+    res.redirect('/login')}
+}
+
+export function isLogged(req, res, next){
+    if (!req.session.user){
+        next()
+    }else{
+    res.redirect('/')}
 }

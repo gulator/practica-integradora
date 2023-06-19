@@ -7,23 +7,31 @@ import { products } from "../utils.js";
 import { mensajes } from "../app.js";
 import { socketServer } from "../app.js";
 import cartService from "../dao/services/cart.service.js";
+import { isAuth, isLogged } from "../middlewares/auth.js";
 const pm = new ProductManager("./products.json");
+
 
 const viewsRouter = Router();
 
-viewsRouter.get("/", async (req, res) => {
+viewsRouter.get("/", isAuth, async (req, res) => {
     const { user } = req.session;
   delete user.password;
+  if (user.email == "adminCoder@coder.com") {
+    req.session.role = 'admin';
+    user.role = 'admin';
+  }
   try {
-    res.render("index", user );
+    res.render("index", {user} );
   } catch (err) {
     res.status(500).send(err);
 }
 });
 
-viewsRouter.get("/products", async (req, res) => {
+viewsRouter.get("/products", isAuth, async (req, res) => {
   const { user } = req.session;
-  delete user.password;
+  if (user){
+      delete user.password;
+  }
   try {
     let { limit, page, sort, brand, stock } = req.query;
     const newProductList = await productService.getAllproducts(
@@ -50,13 +58,13 @@ viewsRouter.get("/products", async (req, res) => {
       nextLink: newProductList.links + `page=${newProductList.nextPage}`,
     };
 
-    res.render("home", { result, user });
+    res.render("home", {result, user});
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-viewsRouter.get("/carts/:cid", async (req, res) => {
+viewsRouter.get("/carts/:cid",isAuth, async (req, res) => {
   try {
     let cid = req.params.cid;
     let carrito = await cartService.getCartById(cid);
@@ -68,7 +76,7 @@ viewsRouter.get("/carts/:cid", async (req, res) => {
   }
 });
 
-viewsRouter.get("/realtimeproducts", async (req, res) => {
+viewsRouter.get("/realtimeproducts",isAuth, async (req, res) => {
   //let newProductList = await pm.getProducts()
   // let newProductList = await productService.getAllproducts()
   // products.push(newProductList)
@@ -106,15 +114,20 @@ viewsRouter.get("/realtimeproducts", async (req, res) => {
   }
 });
 
-viewsRouter.get("/chat", async (req, res) => {
+viewsRouter.get("/chat", isAuth, async (req, res) => {
   let messageList = await messageService.getAllMessages();
   res.render("chat", { messageList });
 });
 
-viewsRouter.get("/login", (req, res) => {
-  res.render("login");
+viewsRouter.get("/login", isLogged, (req, res) => {
+    let error = req.session.error
+    if(req.session.error){
+        console.log(error)
+        delete req.session.error
+    }
+  res.render("login", {error});
 });
-viewsRouter.get("/register", (req, res) => {
+viewsRouter.get("/register", isLogged, (req, res) => {
   res.render("register");
 });
 

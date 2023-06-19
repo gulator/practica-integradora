@@ -2,10 +2,15 @@
   <div class="container-login">
     <h3>LOGIN</h3>
     <form class="formulario-login" action="/api/users/auth" method="post">
-      <input type="email" placeholder="email" name="email"/>
-      <input type="password" placeholder="password" name="password"/>
+      <input type="email" placeholder="email" name="email" />
+      <input type="password" placeholder="password" name="password" />
       <button type="submit">enviar</button>
     </form>
+    {{#if error}}
+      <div class="alert alert-danger rojo" role="alert">
+        Las credenciales no son correctas
+      </div>
+    {{/if}}
     <p>¿No tenes usuario?</p>
     <a href="/register">registrate</a>
   </div>
