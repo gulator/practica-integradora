@@ -14,6 +14,9 @@ class UserService {
     async getByEmail(mail){
         return this.model.findOne({email: mail})
     }
+    async findById(id){
+        return this.model.findOne({_id: id})
+    }
 }
 
 export default UserService = new UserService()

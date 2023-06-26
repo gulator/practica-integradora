@@ -1,6 +1,7 @@
 import { Server } from "socket.io"
 import { mensajes } from "./app.js";
 import messageService from "./dao/services/message.service.js";
+import bcrypt from 'bcrypt'
 
 let products = []
 export {products}
@@ -27,4 +28,11 @@ export function configSocketServer(httpServer) {
     });
   
     return socketServer;
+  }
+
+  export const hashPassword = (password) => {
+   return bcrypt.hashSync (password, bcrypt.genSaltSync(10))
+  }
+  export const comparePassword = (user, pass) => {
+   return bcrypt.compareSync (pass, user.password)
   }

@@ -8,6 +8,11 @@
       <input type="number" placeholder="edad" name="age"/>
       <input type="password" placeholder="password" name="password"/>
       <button type="submit">registrarse</button>
+      {{#if mensaje}}
+      <div class="alert alert-danger rojo" role="alert">
+        Mail ya registrado
+      </div>
+      {{/if}}
     </form>
   </div>
 </section>

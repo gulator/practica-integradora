@@ -13,6 +13,8 @@ import fileStore from 'session-file-store'
 import sessionRouter from "./routes/session.router.js";
 import userRouter from "./routes/users.router.js";
 import MongoStore from "connect-mongo"
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 const app = express();
 const fileStorage = fileStore(session)
@@ -32,7 +34,9 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }))
-
+initializePassport();
+app.use(passport.initialize())
+app.use(passport.session())
 app.engine("handlebars", handlebars.engine());
 app.set("views", "./views");
 app.set("view engine", "handlebars");
