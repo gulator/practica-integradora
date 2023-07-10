@@ -1,10 +1,15 @@
 <section class="login">
   <div class="container-login">
     <h3>LOGIN</h3>
-    <form class="formulario-login" action="/api/users/login" method="post">
+    {{!-- <form class="formulario-login" action="/api/users/login" method="post">
       <input type="email" placeholder="email" name="email" />
       <input type="password" placeholder="password" name="password" />
       <button type="submit">enviar</button>
+    </form> --}}
+    <form class="formulario-login" action="api/users/login" method="post">
+      <input id="email" type="email" placeholder="email" name="email" />
+      <input id="password" type="password" placeholder="password" name="password" />
+      <button onclick="login()">enviar</button>
     </form>
     <a href="/api/users/github"><button class="btn-github">Ingresar con github</button></a>
     {{#if error}}
@@ -21,3 +26,4 @@
     <a href="/register">registrate</a>
   </div>
 </section>
+<script src="js/login.js"></script>

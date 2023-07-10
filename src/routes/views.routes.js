@@ -8,17 +8,19 @@ import { mensajes } from "../app.js";
 import { socketServer } from "../app.js";
 import cartService from "../dao/services/cart.service.js";
 import { isAuth, isLogged } from "../middlewares/auth.js";
+import { authToken } from "../middlewares/jwt.middleware.js";
 const pm = new ProductManager("./products.json");
+
 
 
 const viewsRouter = Router();
 
-viewsRouter.get("/", isAuth, async (req, res) => {
-    const { user } = req.session;
-  delete user.password;
+viewsRouter.get("/", authToken, async (req, res) => {
+    const user = req.user
+    console.log('usuario: ',user)
+  // delete user.password;
   if (user.email == "adminCoder@coder.com") {
-    req.session.role = 'admin';
-    user.role = 'admin';
+    req.user.role = 'admin';
   }
   try {
     res.render("index", {user} );

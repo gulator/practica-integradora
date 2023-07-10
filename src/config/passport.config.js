@@ -41,11 +41,11 @@ const initializePassport = () => {
       async (username, password, done) => {
         try {
           const user = await userService.getByEmail(username);
-          console.log(user);
+          // console.log(user);
           if (!user) {
             return done(null, false);
           }
-          console.log(comparePassword(user, password));
+          // console.log(comparePassword(user, password));
           if (!comparePassword(user, password)) return done(null, false);
           return done(null, user);
         } catch (error) {
