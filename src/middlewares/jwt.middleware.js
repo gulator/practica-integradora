@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 const privatekey = 'privateKey'
 
 export const generateToken = (user)=>{
-    console.log('user jwt:', user)
     return jwt.sign(user, privatekey, {expiresIn: '2h'})
 }
 

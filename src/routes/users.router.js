@@ -101,12 +101,12 @@ userRouter.post(
       age: user.age,
       role: user.role,
     };
-    
+    res.cookie('cookie1', 'cookie Test', {maxAge: 600000})
     const token = generateToken(user);
     res.cookie('token', token, {
-      maxAge: 300*1000,
-      // httpOnly:true
-    }).send()
+      httpOnly: true,
+      maxAge: 600000,
+    }).send();
     // res.redirect("/api/users/private");
 
     // const user = await userService.getByEmail(email);

@@ -17,7 +17,6 @@ const viewsRouter = Router();
 
 viewsRouter.get("/", authToken, async (req, res) => {
     const user = req.user
-    console.log('usuario: ',user)
   // delete user.password;
   if (user.email == "adminCoder@coder.com") {
     req.user.role = 'admin';
