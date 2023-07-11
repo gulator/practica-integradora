@@ -9,13 +9,14 @@ import { socketServer } from "../app.js";
 import cartService from "../dao/services/cart.service.js";
 import { isAuth, isLogged } from "../middlewares/auth.js";
 import { authToken } from "../middlewares/jwt.middleware.js";
+import passport from "passport";
 const pm = new ProductManager("./products.json");
 
 
 
 const viewsRouter = Router();
 
-viewsRouter.get("/", authToken, async (req, res) => {
+viewsRouter.get("/", passport.authenticate('current', {session: false}), async (req, res) => {
     const user = req.user
   // delete user.password;
   if (req.user){
@@ -32,11 +33,9 @@ else
 res.redirect('/login')
 });
 
-viewsRouter.get("/products", isAuth, async (req, res) => {
-  const { user } = req.session;
-  if (user){
-      delete user.password;
-  }
+viewsRouter.get("/products", passport.authenticate('current', {session: false}), async (req, res) => {
+  const user = req.user
+ 
   try {
     let { limit, page, sort, brand, stock } = req.query;
     const newProductList = await productService.getAllproducts(
@@ -69,19 +68,20 @@ viewsRouter.get("/products", isAuth, async (req, res) => {
   }
 });
 
-viewsRouter.get("/carts/:cid",isAuth, async (req, res) => {
+viewsRouter.get("/carts/:cid",passport.authenticate('current', {session: false}), async (req, res) => {
+  const user = req.user
   try {
     let cid = req.params.cid;
     let carrito = await cartService.getCartById(cid);
     let resultado = carrito[0].products;
     // res.send(carrito)
-    res.render("carts", { resultado });
+    res.render("carts", { resultado, user });
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-viewsRouter.get("/realtimeproducts",isAuth, async (req, res) => {
+viewsRouter.get("/realtimeproducts",passport.authenticate('current', {session: false}), async (req, res) => {
   //let newProductList = await pm.getProducts()
   // let newProductList = await productService.getAllproducts()
   // products.push(newProductList)
@@ -119,7 +119,7 @@ viewsRouter.get("/realtimeproducts",isAuth, async (req, res) => {
   }
 });
 
-viewsRouter.get("/chat", isAuth, async (req, res) => {
+viewsRouter.get("/chat", passport.authenticate('current', {session: false}), async (req, res) => {
   let messageList = await messageService.getAllMessages();
   res.render("chat", { messageList });
 });

@@ -18,11 +18,13 @@ class UserService {
         return this.model.findOne({_id: id})
     }
 
-    async addCartToUser(userId, cid) {       
-        
+    async addCartToUser(userId, cid) { 
+
           let user = await userModel.findOne({ _id: userId });
+          console.log('user Found:', user)
           user.carts.push({ cart: cid });
-          return await cartModel.updateOne({ _id: userId }, user);
+          
+          return await userModel.updateOne({ _id: userId }, user);
         
     }
 }

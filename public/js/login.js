@@ -18,6 +18,7 @@ function login() {
         body: JSON.stringify(datos)
       })
       .then((res) => {
+        // window.location.href = '/current';
         window.location.href = '../../login';
       })
       .catch((err) => {

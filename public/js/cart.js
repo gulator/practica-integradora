@@ -15,9 +15,26 @@ vaciarCarrito.addEventListener("click", (e) => {
     //     'Content-Type': 'application/json'
     //   },
     //   body: JSON.stringify({quantity: quantity})
-  })
-  .then(()=>{
-    location.reload(true)
-  })
+  }).then(() => {
+    location.reload(true);
+  });
   //   location.reload(true)
+});
+
+let cerrarCarrito = document.getElementById("cerrarCarrito");
+cerrarCarrito.addEventListener("click", (e) => {
+  e.preventDefault();
+  let cid = localStorage.getItem("idCarrito");
+  
+  fetch(`/api/users/cart/${cid}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((datos) => {
+      localStorage.removeItem('idCarrito');
+      window.location.href = '../../products';
+    });
 });

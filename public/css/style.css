@@ -192,6 +192,7 @@ td{
     cursor: pointer;
     display: flex;
     align-items: center;
+    color: #ffa23e;
 }
 .del-carrito p{
     margin: 0;

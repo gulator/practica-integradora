@@ -39,7 +39,7 @@ function loadCart(){
         }
         cartString = localStorage.getItem('idCarrito')
         let data = JSON.parse(cartString)
-        console.log(data)
+        // console.log(data)
         let cid = data.cid
         fetch(`/api/carts/${cid}`)
         .then((res)=>res.json())

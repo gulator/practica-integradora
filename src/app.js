@@ -23,14 +23,14 @@ export { mensajes }
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser('kc#L4MXT$Qsuk@'))
+app.use(cookieParser('privateKey'))
 app.use(session({
   store:MongoStore.create({
     mongoUrl:"mongodb+srv://jdascanio:jdascaniocoderback@cluster43330.crt6quf.mongodb.net/ecommerce?retryWrites=true&w=majority",
     mongoOptions:{useNewUrlParser: true, useUnifiedTopology: true},
     ttl: 3600
   }),
-  secret:'kc#L4MXT$Qsuk@',
+  secret:'privateKey',
   resave: true,
   saveUninitialized: true
 }))

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 
+
 const privatekey = 'privateKey'
 
 export const generateToken = (user)=>{
@@ -19,7 +20,7 @@ export const authToken = (req,res,next)=>{
         if(err){
             // res.status(401).send({message: 'Token not valid'})
         }
-        console.log('credenciales:', credentials)
+        // console.log('credenciales:', credentials)
         req.user = credentials;
         next()
     })

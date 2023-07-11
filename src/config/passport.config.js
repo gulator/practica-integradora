@@ -1,10 +1,14 @@
 import passport from "passport";
+import { Strategy, ExtractJwt } from "passport-jwt";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
 import userService from "../dao/services/user.service.js";
 import { hashPassword, comparePassword } from "../utils.js";
 
 const LocalStrategy = local.Strategy;
+const jwtStrategy = Strategy;
+const jwtExtract = ExtractJwt;
+
 const initializePassport = () => {
   passport.use(
     "register",
@@ -69,10 +73,10 @@ const initializePassport = () => {
           if (!user) {
             let newUser = {
               first_name: profile._json.name,
-              last_name: '',
-              age: '',
+              last_name: "",
+              age: "",
               email: profile._json.email,
-              password: '',
+              password: "",
             };
             let result = await userService.createUser(newUser);
             done(null, result);
@@ -86,6 +90,26 @@ const initializePassport = () => {
     )
   );
 
+  passport.use(
+		'current',
+		new jwtStrategy(
+			{
+				jwtFromRequest: jwtExtract.fromExtractors([cookieExtractor]),
+				secretOrKey: 'privateKey',
+			},
+			(payload, done) => {
+				done(null, payload);
+			}
+		),
+		async (payload, done) => {
+			try {
+				return done(null, payload);
+			} catch (error) {
+				done(error);
+			}
+		}
+	);
+
   passport.serializeUser((user, done) => {
     done(null, user._id);
   });
@@ -94,4 +118,17 @@ const initializePassport = () => {
     done(null, user);
   });
 };
+
+const cookieExtractor = (req) => {
+  let token = null;
+  
+  if (req && req.cookies) {
+    token = req.cookies['token'];
+  }  
+  return token;
+};
+
 export default initializePassport;
+
+
+

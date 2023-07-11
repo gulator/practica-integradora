@@ -102,7 +102,6 @@ userRouter.post(
       role: user.role,
     };
     req.user = user
-    res.cookie('cookie1', 'cookie Test', {maxAge: 600000})
     const token = generateToken(user);
     res.cookie('token', token, {
       httpOnly: true,
@@ -125,7 +124,7 @@ userRouter.post(
   }
 );
 
-userRouter.get('/private', authToken, async(req,res)=>{
+userRouter.get('/current', passport.authenticate('current', {session: false}), async(req,res)=>{
   res.status(200).send({ message: 'Private route', user: req.user });
 })
 userRouter.get("/failedlogin", async (req, res) => {
@@ -146,9 +145,7 @@ userRouter.get(
   }
 );
 
-userRouter.get("/private", authToken, (req, res) => {
-  res.status(200).send({ message: "ruta privada", user: req.user });
-});
+
 
 userRouter.get("/logout", (req, res) => {
   res.clearCookie('token')
@@ -160,4 +157,18 @@ userRouter.get("/logout", (req, res) => {
     }
 });
 
+userRouter.post('/cart/:cid', async (req, res) => {
+  try {
+      let userId = req.user._id
+      let cid = req.params.cid
+      // let datos = { "pid": pid, "quantity": req.body.quantity }
+      //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
+      let addedProduct = await userService.addCartToUser(userId, cid)
+      
+      res.status(200).send()
+  }
+  catch (err) {
+      res.send(err)
+  }
+})
 export default userRouter;
