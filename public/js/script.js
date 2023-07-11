@@ -190,3 +190,5 @@ let filtrar = document.getElementById('filters')
 filtrar.addEventListener('click', ()=>{
   window.location.href = `/products/${link}`;
 })
+
+

@@ -8,7 +8,7 @@ import { mensajes } from "../app.js";
 import { socketServer } from "../app.js";
 import cartService from "../dao/services/cart.service.js";
 import { isAuth, isLogged } from "../middlewares/auth.js";
-import { authToken } from "../middlewares/jwt.middleware.js";
+import { authToken, middlewarePassportJWT } from "../middlewares/jwt.middleware.js";
 import passport from "passport";
 const pm = new ProductManager("./products.json");
 
@@ -16,27 +16,16 @@ const pm = new ProductManager("./products.json");
 
 const viewsRouter = Router();
 
-viewsRouter.get("/", passport.authenticate('current', {session: false}), async (req, res) => {
-    const user = req.user
+viewsRouter.get("/", middlewarePassportJWT, async (req, res) => {
+  const user = req.user
   // delete user.password;
   if (req.user){
-  if (user.email == "adminCoder@coder.com") {
-    req.user.role = 'admin';
-  }
-  
-  try {
-    res.render("index", {user} );
-  } catch (err) {
-    res.status(500).send(err);
-}}
-else
-res.redirect('/login')
-});
-
-viewsRouter.get("/products", passport.authenticate('current', {session: false}), async (req, res) => {
-  const user = req.user
- 
-  try {
+    if (user.email == "adminCoder@coder.com") {
+      req.user.role = 'admin';
+    }
+    
+    try {
+    
     let { limit, page, sort, brand, stock } = req.query;
     const newProductList = await productService.getAllproducts(
       limit,
@@ -66,9 +55,51 @@ viewsRouter.get("/products", passport.authenticate('current', {session: false}),
   } catch (err) {
     res.status(500).send(err);
   }
+  
+  // try {
+  //   // res.render("index", {user} );
+  //   res.render("home", {user} );
+  // } catch (err) {
+  //   res.status(500).send(err);
+}
+// else
+// res.redirect('/login')
 });
 
-viewsRouter.get("/carts/:cid",passport.authenticate('current', {session: false}), async (req, res) => {
+viewsRouter.get("/products", middlewarePassportJWT, async (req, res) => {
+  const user = req.user
+ 
+  try {
+    let { limit, page, sort, brand, stock } = req.query;
+    const newProductList = await productService.getAllproducts(
+      limit,
+      page,
+      sort,
+      brand,
+      stock
+    );
+    let result = {
+      status: "success",
+      payload: newProductList.docs,
+      totalDocs: newProductList.totalDocs,
+      limit: newProductList.limit,
+      totalPages: newProductList.totalPages,
+      page: newProductList.page,
+      pagingCounter: newProductList.pagingCounter,
+      hasPrevPage: newProductList.hasPrevPage,
+      hasNextPage: newProductList.hasNextPage,
+      prevPage: newProductList.prevPage,
+      nextPage: newProductList.nextPage,
+      prevLink: newProductList.links + `page=${newProductList.prevPage}`,
+      nextLink: newProductList.links + `page=${newProductList.nextPage}`,
+    };    
+    res.render("home", {result, user});
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+viewsRouter.get("/carts/:cid",middlewarePassportJWT, async (req, res) => {
   const user = req.user
   try {
     let cid = req.params.cid;
@@ -81,7 +112,7 @@ viewsRouter.get("/carts/:cid",passport.authenticate('current', {session: false})
   }
 });
 
-viewsRouter.get("/realtimeproducts",passport.authenticate('current', {session: false}), async (req, res) => {
+viewsRouter.get("/realtimeproducts",middlewarePassportJWT, async (req, res) => {
   //let newProductList = await pm.getProducts()
   // let newProductList = await productService.getAllproducts()
   // products.push(newProductList)
@@ -119,7 +150,7 @@ viewsRouter.get("/realtimeproducts",passport.authenticate('current', {session: f
   }
 });
 
-viewsRouter.get("/chat", passport.authenticate('current', {session: false}), async (req, res) => {
+viewsRouter.get("/chat", middlewarePassportJWT, async (req, res) => {
   let messageList = await messageService.getAllMessages();
   res.render("chat", { messageList });
 });

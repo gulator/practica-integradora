@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import passport from 'passport'
 
 
 const privatekey = 'privateKey'
@@ -26,8 +27,7 @@ export const authToken = (req,res,next)=>{
     })
 }
 export const middlewarePassportJWT = async (req, res, next) => {
-	console.log('middlewarePassportJWT');
-	passport.authenticate('jwt', { session: false }, (err, usr, info) => {
+	passport.authenticate('current', { session: false }, (err, usr, info) => {
 		if (err) {
 			next(err);
 		}
