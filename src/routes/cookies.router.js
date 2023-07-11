@@ -8,7 +8,7 @@ cookieRouter.get('/get', (req, res) => {
 });
 
 cookieRouter.get('/set', (req, res) => {
-	res.cookie('Verdad', 'El que juega al LoL no tiene dedos', {
+	res.cookie('token', 'El que juega al LoL no tiene dedos', {
 		maxAge: 1000000,
 	}).send('Se Guardo la Verdad unica');
 });

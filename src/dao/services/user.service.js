@@ -17,6 +17,14 @@ class UserService {
     async findById(id){
         return this.model.findOne({_id: id})
     }
+
+    async addCartToUser(userId, cid) {       
+        
+          let user = await userModel.findOne({ _id: userId });
+          user.carts.push({ cart: cid });
+          return await cartModel.updateOne({ _id: userId }, user);
+        
+    }
 }
 
 export default UserService = new UserService()

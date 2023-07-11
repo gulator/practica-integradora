@@ -18,14 +18,18 @@ const viewsRouter = Router();
 viewsRouter.get("/", authToken, async (req, res) => {
     const user = req.user
   // delete user.password;
+  if (req.user){
   if (user.email == "adminCoder@coder.com") {
     req.user.role = 'admin';
   }
+  
   try {
     res.render("index", {user} );
   } catch (err) {
     res.status(500).send(err);
-}
+}}
+else
+res.redirect('/login')
 });
 
 viewsRouter.get("/products", isAuth, async (req, res) => {

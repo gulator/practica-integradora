@@ -2,7 +2,7 @@ import { Router } from "express";
 import userService from "../dao/services/user.service.js";
 import { hashPassword, comparePassword } from "../utils.js";
 import passport from "passport";
-import { authToken, generateToken } from "../middlewares/jwt.middleware.js";
+import { authToken, generateToken, middlewarePassportJWT } from "../middlewares/jwt.middleware.js";
 
 const userRouter = Router();
 
@@ -83,8 +83,8 @@ userRouter.post(
     //   email: req.user.email,
     //   role: req.user.role
     // }
-    const { email, password } = req.body;
-    let user = await userService.getByEmail(email);
+    // const { email, password } = req.body;
+    let user = await userService.getByEmail(req.user.email);
     if (!user) {
       res.status(401).send({ message: "User not found" });
     }
@@ -101,6 +101,7 @@ userRouter.post(
       age: user.age,
       role: user.role,
     };
+    req.user = user
     res.cookie('cookie1', 'cookie Test', {maxAge: 600000})
     const token = generateToken(user);
     res.cookie('token', token, {
@@ -150,13 +151,13 @@ userRouter.get("/private", authToken, (req, res) => {
 });
 
 userRouter.get("/logout", (req, res) => {
-  req.clearCookie('token')((err) => {
-    if (!err) {
+  res.clearCookie('token')
+    try{
       res.redirect("/login");
-    } else {
+    
+    } catch {
       res.status(500).send("Internal error");
     }
-  });
 });
 
 export default userRouter;

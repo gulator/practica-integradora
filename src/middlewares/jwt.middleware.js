@@ -24,3 +24,20 @@ export const authToken = (req,res,next)=>{
         next()
     })
 }
+export const middlewarePassportJWT = async (req, res, next) => {
+	console.log('middlewarePassportJWT');
+	passport.authenticate('jwt', { session: false }, (err, usr, info) => {
+		if (err) {
+			next(err);
+		}
+
+		if (!usr) {
+			res.status(401).send({
+				message: info.messages ? info.messages : info.toString(),
+			});
+		}
+
+		req.user = usr;
+		next();
+	})(req, res, next);
+};
