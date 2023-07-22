@@ -1,6 +1,7 @@
 import { Router } from "express";
 import ProductManager from "../dao/modules/productManager.js";
 import productService from "../dao/services/product.service.js";
+import productController from "../dao/controllers/product.controller.js";
 import { products } from "../utils.js";
 import { socketServer } from "../app.js";
 const pm = new ProductManager('./products.json')
@@ -11,7 +12,7 @@ productRouter.get('/', async (req, res) => {
     try {
         //let productos = await pm.getAllproducts()
         let {limit, page, sort, category} = req.query;
-        const newProductList = await productService.getAllproducts(limit, page, sort, category);
+        const newProductList = await productController.getAllproducts(limit, page, sort, category);
         let prevL = 1
         let nextL =2
         res.status(200).send({
@@ -57,7 +58,7 @@ productRouter.get("/:pid", async (req, res) => {
     try {
         let pid = req.params.pid
         //let producto = await pm.getProductById(parseInt(pid))
-        let producto = await productService.getProduct(pid)
+        let producto = await productController.getProduct(pid)
         if (producto === false) {
             res.status(400).send({ error: 'ID no encontrado' })
         } else {
@@ -73,7 +74,7 @@ productRouter.post("/", async (req, res) => {
     try {
         console.log(req.body)
         //let value = await pm.addProduct(req.body)
-        let value = await productService.addProduct(req.body)
+        let value = await productController.addProduct(req.body)
         if (value === false) {
             res.status(400).send({ status: 400, error: 'Campos incompletos o incorrectos' })
         } else if (value === 'code repeated') {
@@ -81,7 +82,7 @@ productRouter.post("/", async (req, res) => {
         }   
         else {
             //socketServer.emit('update', await pm.getproducts())
-            socketServer.emit('update', await productService.getAllproducts())
+            socketServer.emit('update', await productController.getAllproducts())
             res.status(201).send(value)
         }
 
@@ -94,7 +95,7 @@ productRouter.put("/:pid", async (req, res) => {
     try {
         let pid = req.params.pid
         //let productEdit = await pm.updateProduct(pid, req.body)
-        let productEdit = await productService.updateProduct(pid, req.body)
+        let productEdit = await productController.updateProduct(pid, req.body)
         if (!productEdit) {
             res.status(400).send({ error: 'Uno o más campos no son válidos' })
         } else if (productEdit === 400) {
@@ -104,7 +105,7 @@ productRouter.put("/:pid", async (req, res) => {
         }
         else{
             //socketServer.emit('update', await pm.getproducts())
-            socketServer.emit('update', await productService.getAllproducts())
+            socketServer.emit('update', await productController.getAllproducts())
             res.send(productEdit)
         }
     }
@@ -117,13 +118,13 @@ productRouter.delete("/:pid", async (req, res) => {
     try {
         let pid = req.params.pid
         //let productDelete = await pm.deleteProduct(pid)
-        let productDelete = await productService.deleteProduct(pid)
+        let productDelete = await productController.deleteProduct(pid)
         if (!productDelete) {
             res.status(404).send({ error: 'El id indicado no corresponde a un producto valido' })
         }        
         else{
             //socketServer.emit('update', await pm.getproducts())
-            socketServer.emit('update', await productService.getAllproducts())
+            socketServer.emit('update', await productController.getAllproducts())
             res.send(`se borró producto con id: ${pid}`)
         }
     }

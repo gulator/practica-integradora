@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
+import config from '../config/config.js'
 
 
-const privatekey = 'privateKey'
+const privatekey = config.cookieKey
 
 export const generateToken = (user)=>{
     return jwt.sign(user, privatekey, {expiresIn: '2h'})

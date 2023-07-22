@@ -1,72 +1,72 @@
 import { productModel } from "../../dao/models/product.model.js";
 
 class ProductService {
-  constructor() {
-    this.model = productModel;
+  constructor(model) {
+    this.model = model;
   }
-  async getAllproducts(limit = 10, page = 1, sort="sin", brand="nada", stock) {
+  async getAllproducts(limit, page, sort, filtro) {
     // console.log(`lim: ${limit}, page: ${page}, sorting: ${sort}, category: ${category}`)
-    let filtro = {}
-    if (brand !== "nada"){
-        filtro = {brand}
-        if (stock === "true"){
-          filtro = {brand, stock: {$gt: 0}}
-        }
-        else if (stock === "false"){
-          filtro = {brand, stock: {$eq: 0}}
-        }
-        else{
-          filtro = {brand, stock: {$gte: 0}}
-        }
-    }
-    else if (stock === "true"){
-      filtro = {stock: {$gt: 0}}
-    }
-    else if (stock === "false"){
-      filtro = {stock: {$eq: 0}}
-    }
-    else{
-      filtro = {stock: {$gte: 0}}
-    }
+    // let filtro = {}
+    // if (brand !== "nada"){
+    //     filtro = {brand}
+    //     if (stock === "true"){
+    //       filtro = {brand, stock: {$gt: 0}}
+    //     }
+    //     else if (stock === "false"){
+    //       filtro = {brand, stock: {$eq: 0}}
+    //     }
+    //     else{
+    //       filtro = {brand, stock: {$gte: 0}}
+    //     }
+    // }
+    // else if (stock === "true"){
+    //   filtro = {stock: {$gt: 0}}
+    // }
+    // else if (stock === "false"){
+    //   filtro = {stock: {$eq: 0}}
+    // }
+    // else{
+    //   filtro = {stock: {$gte: 0}}
+    // }
     let queryResult
     if (sort === "sin"){
-        queryResult = await productModel.paginate(filtro, {page, limit, lean:true })
+        queryResult = await this.model.paginate(filtro, {page, limit, lean:true })
     }else{
-        queryResult = await productModel.paginate(filtro, {page, limit, sort:{price: sort}, lean:true })
+        queryResult = await this.model.paginate(filtro, {page, limit, sort:{price: sort}, lean:true })
     }
     
-    let links
+    // let links
 
-    if (sort === "sin"){
-        if (brand === "nada"){            
-            if (stock === undefined){
-              links = `?limit=${limit}&`
-            }
-            else{
-              links = `?limit=${limit}&stock=${stock}&`
-            }
-        }
-        else{
-            links = `?limit=${limit}&brand=${brand}&stock=${stock}&`
-        }
-    }
-    else if(brand === "nada" || !brand ){
-      if (stock === undefined){
-        links = `?limit=${limit}&sort=${sort}&`
-      }
-      else{
-        links = `?limit=${limit}&sort=${sort}&stock=${stock}&`
-      }        
-    }
-    else{
-      if (stock === undefined){
-        links = `?limit=${limit}&brand=${brand}&sort=${sort}&`
-      }
-      else{
-        links = `?limit=${limit}&brand=${brand}&sort=${sort}&stock=${stock}&`
-      } 
-    }
-    return {links, ...queryResult}
+    // if (sort === "sin"){
+    //     if (brand === "nada"){            
+    //         if (stock === undefined){
+    //           links = `?limit=${limit}&`
+    //         }
+    //         else{
+    //           links = `?limit=${limit}&stock=${stock}&`
+    //         }
+    //     }
+    //     else{
+    //         links = `?limit=${limit}&brand=${brand}&stock=${stock}&`
+    //     }
+    // }
+    // else if(brand === "nada" || !brand ){
+    //   if (stock === undefined){
+    //     links = `?limit=${limit}&sort=${sort}&`
+    //   }
+    //   else{
+    //     links = `?limit=${limit}&sort=${sort}&stock=${stock}&`
+    //   }        
+    // }
+    // else{
+    //   if (stock === undefined){
+    //     links = `?limit=${limit}&brand=${brand}&sort=${sort}&`
+    //   }
+    //   else{
+    //     links = `?limit=${limit}&brand=${brand}&sort=${sort}&stock=${stock}&`
+    //   } 
+    // }
+    return queryResult
 
 
     // let queryProductos =
@@ -99,20 +99,14 @@ class ProductService {
   }
 
   async deleteProduct(productId) {
-    if (!productId) {
-      throw new Error("Faltan Campos");
-    }
     return await this.model.deleteOne({ _id: productId });
   }
 
   async updateProduct(productId, data) {
-    if (!productId) {
-      throw new Error("Faltan Campos");
-    }
     return await this.model.updateOne({ _id: productId }, data);
   }
 }
 
-const productService = new ProductService();
+// const productService = new ProductService();
 
-export default productService;
+export default ProductService;

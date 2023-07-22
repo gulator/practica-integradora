@@ -25,7 +25,6 @@ let cerrarCarrito = document.getElementById("cerrarCarrito");
 cerrarCarrito.addEventListener("click", (e) => {
   e.preventDefault();
   let cid = localStorage.getItem("idCarrito");
-  
   fetch(`/api/users/cart/${cid}`, {
     method: "POST",
     headers: {

@@ -165,7 +165,7 @@ userRouter.post('/cart/:cid', async (req, res) => {
       //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
       let addedProduct = await userService.addCartToUser(userId, cid)
       
-      res.status(200).send()
+      res.status(200).send(addedProduct)
   }
   catch (err) {
       res.send(err)

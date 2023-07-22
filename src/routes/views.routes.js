@@ -2,6 +2,8 @@ import { Router } from "express";
 import handlebars from "express-handlebars";
 import ProductManager from "../dao/modules/productManager.js";
 import productService from "../dao/services/product.service.js";
+import productController from "../dao/controllers/product.controller.js";
+import cartController from "../dao/controllers/cart.controller.js";
 import messageService from "../dao/services/message.service.js";
 import { products } from "../utils.js";
 import { mensajes } from "../app.js";
@@ -10,6 +12,7 @@ import cartService from "../dao/services/cart.service.js";
 import { isAuth, isLogged } from "../middlewares/auth.js";
 import { authToken, middlewarePassportJWT } from "../middlewares/jwt.middleware.js";
 import passport from "passport";
+import config from "../config/config.js";
 const pm = new ProductManager("./products.json");
 
 
@@ -20,14 +23,14 @@ viewsRouter.get("/", middlewarePassportJWT, async (req, res) => {
   const user = req.user
   // delete user.password;
   if (req.user){
-    if (user.email == "adminCoder@coder.com") {
+    if (user.email == config.adminMail) {
       req.user.role = 'admin';
     }
     
     try {
     
     let { limit, page, sort, brand, stock } = req.query;
-    const newProductList = await productService.getAllproducts(
+    const newProductList = await productController.getAllproducts(
       limit,
       page,
       sort,
@@ -71,7 +74,7 @@ viewsRouter.get("/products", middlewarePassportJWT, async (req, res) => {
  
   try {
     let { limit, page, sort, brand, stock } = req.query;
-    const newProductList = await productService.getAllproducts(
+    const newProductList = await productController.getAllproducts(
       limit,
       page,
       sort,
@@ -103,7 +106,7 @@ viewsRouter.get("/carts/:cid",middlewarePassportJWT, async (req, res) => {
   const user = req.user
   try {
     let cid = req.params.cid;
-    let carrito = await cartService.getCartById(cid);
+    let carrito = await cartController.getCartById(cid);
     let resultado = carrito[0].products;
     // res.send(carrito)
     res.render("carts", { resultado, user });
@@ -119,7 +122,7 @@ viewsRouter.get("/realtimeproducts",middlewarePassportJWT, async (req, res) => {
   // res.render('realTimeProducts',{newProductList})
   try {
     let { limit, page, sort, brand, stock } = req.query;
-    const newProductList = await productService.getAllproducts(
+    const newProductList = await productController.getAllproducts(
       limit,
       page,
       sort,
