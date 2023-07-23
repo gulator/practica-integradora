@@ -8,5 +8,8 @@ export default{
     adminName: process.env.ADMIN_NAME,
     adminPassword: process.env.ADMIN_PSW,
     adminMail: process.env.ADMIN_MAIL,
-    cookieKey: process.env.COOKIE_KEY
+    cookieKey: process.env.COOKIE_KEY,
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.CALL_BACK_URL
 }

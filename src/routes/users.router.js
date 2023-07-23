@@ -1,8 +1,13 @@
 import { Router } from "express";
 import userService from "../dao/services/user.service.js";
+import userController from "../dao/controllers/user.controller.js";
 import { hashPassword, comparePassword } from "../utils.js";
 import passport from "passport";
-import { authToken, generateToken, middlewarePassportJWT } from "../middlewares/jwt.middleware.js";
+import {
+  authToken,
+  generateToken,
+  middlewarePassportJWT,
+} from "../middlewares/jwt.middleware.js";
 
 const userRouter = Router();
 
@@ -84,7 +89,7 @@ userRouter.post(
     //   role: req.user.role
     // }
     // const { email, password } = req.body;
-    let user = await userService.getByEmail(req.user.email);
+    let user = await userController.getByEmail(req.user.email);
     if (!user) {
       res.status(401).send({ message: "User not found" });
     }
@@ -101,12 +106,14 @@ userRouter.post(
       age: user.age,
       role: user.role,
     };
-    req.user = user
+    req.user = user;
     const token = generateToken(user);
-    res.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 600000,
-    }).send();
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        maxAge: 600000,
+      })
+      .send();
     // res.redirect("/api/users/private");
 
     // const user = await userService.getByEmail(email);
@@ -124,9 +131,13 @@ userRouter.post(
   }
 );
 
-userRouter.get('/current', passport.authenticate('current', {session: false}), async(req,res)=>{
-  res.status(200).send({ message: 'Private route', user: req.user });
-})
+userRouter.get(
+  "/current",
+  passport.authenticate("current", { session: false }),
+  async (req, res) => {
+    res.status(200).send({ message: "Private route", user: req.user });
+  }
+);
 userRouter.get("/failedlogin", async (req, res) => {
   res.send({ error: "failed login" });
 });
@@ -145,30 +156,26 @@ userRouter.get(
   }
 );
 
-
-
 userRouter.get("/logout", (req, res) => {
-  res.clearCookie('token')
-    try{
-      res.redirect("/login");
-    
-    } catch {
-      res.status(500).send("Internal error");
-    }
+  res.clearCookie("token");
+  try {
+    res.redirect("/login");
+  } catch {
+    res.status(500).send("Internal error");
+  }
 });
 
-userRouter.post('/cart/:cid', async (req, res) => {
+userRouter.post("/cart/:cid", async (req, res) => {
   try {
-      let userId = req.user._id
-      let cid = req.params.cid
-      // let datos = { "pid": pid, "quantity": req.body.quantity }
-      //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
-      let addedProduct = await userService.addCartToUser(userId, cid)
-      
-      res.status(200).send(addedProduct)
+    let userId = req.user._id;
+    let cid = req.params.cid;
+    // let datos = { "pid": pid, "quantity": req.body.quantity }
+    //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
+    let addedProduct = await userController.addCartToUser(userId, cid);
+
+    res.status(200).send(addedProduct);
+  } catch (err) {
+    res.send(err);
   }
-  catch (err) {
-      res.send(err)
-  }
-})
+});
 export default userRouter;

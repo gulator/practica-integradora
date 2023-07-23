@@ -1,8 +1,8 @@
 import { userModel } from "../models/user.models.js";
 
-class UserService {
-    constructor(){
-        this.model = userModel
+export default class UserService {
+    constructor(model){
+        this.model = model
     }
 
     async createUser(user){
@@ -20,12 +20,12 @@ class UserService {
 
     async addCartToUser(userId, cid) { 
 
-          let user = await userModel.findOne({ _id: userId });
+          let user = await this.model.findOne({ _id: userId });
           user.carts.push({ cart: cid });
           
-          return await userModel.updateOne({ _id: userId }, user);
+          return await this.model.updateOne({ _id: userId }, user);
         
     }
 }
 
-export default UserService = new UserService()
+//export default UserService = new UserService()

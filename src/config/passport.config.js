@@ -3,7 +3,9 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
 import userService from "../dao/services/user.service.js";
+import userController from "../dao/controllers/user.controller.js";
 import { hashPassword, comparePassword } from "../utils.js";
+import config from "./config.js";
 
 const LocalStrategy = local.Strategy;
 const jwtStrategy = Strategy;
@@ -17,7 +19,7 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         const { first_name, last_name, email, age } = req.body;
         try {
-          let user = await userService.getByEmail(username);
+          let user = await userController.getByEmail(username);
           if (user) {
             return done(null, false);
           }
@@ -28,7 +30,7 @@ const initializePassport = () => {
             age,
             password: hashPassword(password),
           };
-          let result = await userService.createUser(newUser);
+          let result = await userController.createUser(newUser);
           delete result.password;
           console.log(result);
           return done(null, result);
@@ -44,7 +46,7 @@ const initializePassport = () => {
       { usernameField: "email" },
       async (username, password, done) => {
         try {
-          const user = await userService.getByEmail(username);
+          const user = await userController.getByEmail(username);
           // console.log(user);
           if (!user) {
             return done(null, false);
@@ -63,13 +65,13 @@ const initializePassport = () => {
     "github",
     new GithubStrategy(
       {
-        clientID: "Iv1.8373802b7ba9e8e5",
-        clientSecret: "413319c9512f4ae9c5a70cfe885243764be06819",
-        callbackURL: "http://localhost:8080/api/users/githubcallback",
+        clientID: config.clientID,
+        clientSecret: config.clientSecret,
+        callbackURL: config.callbackURL,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          let user = await userService.getByEmail(profile._json.email);
+          let user = await userController.getByEmail(profile._json.email);
           if (!user) {
             let newUser = {
               first_name: profile._json.name,
@@ -78,7 +80,7 @@ const initializePassport = () => {
               email: profile._json.email,
               password: "",
             };
-            let result = await userService.createUser(newUser);
+            let result = await userController.createUser(newUser);
             done(null, result);
           } else {
             done(null, user);
@@ -114,7 +116,7 @@ const initializePassport = () => {
     done(null, user._id);
   });
   passport.deserializeUser(async (id, done) => {
-    let user = await userService.findById(id);
+    let user = await userController.findById(id);
     done(null, user);
   });
 };
