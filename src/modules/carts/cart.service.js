@@ -1,6 +1,6 @@
 import { response } from "express";
-import { cartModel } from "../../dao/models/cart.model.js";
-import { productModel } from "../models/product.model.js";
+import { cartModel } from "./cart.model.js";
+import { productModel } from "../products/product.model.js";
 import { products } from "../../utils.js";
 
 class CartService {

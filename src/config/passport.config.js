@@ -2,10 +2,13 @@ import passport from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
-import userService from "../dao/services/user.service.js";
-import userController from "../dao/controllers/user.controller.js";
+import userService from "../modules/users/user.mongo.dao.js";
+// import userController from "../modules/users/user.controller.js";
+import UserFactory from "../modules/users/user.factory.js";
 import { hashPassword, comparePassword } from "../utils.js";
-import config from "./config.js";
+import config from "./config.js"; 
+
+let userController = new UserFactory ()
 
 const LocalStrategy = local.Strategy;
 const jwtStrategy = Strategy;
@@ -19,7 +22,7 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         const { first_name, last_name, email, age } = req.body;
         try {
-          let user = await userController.getByEmail(username);
+          
           if (user) {
             return done(null, false);
           }

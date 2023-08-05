@@ -11,5 +11,6 @@ export default{
     cookieKey: process.env.COOKIE_KEY,
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: process.env.CALL_BACK_URL
+    callbackURL: process.env.CALL_BACK_URL,
+    persistence: process.env.PERSISTENCE
 }

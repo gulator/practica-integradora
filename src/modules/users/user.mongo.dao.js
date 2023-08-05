@@ -1,8 +1,8 @@
-import { userModel } from "../models/user.models.js";
+import { userModel } from "./user.models.js";
 
-export default class UserService {
-    constructor(model){
-        this.model = model
+export default class UserMongoDAO {
+    constructor(){
+        this.model = userModel
     }
 
     async createUser(user){

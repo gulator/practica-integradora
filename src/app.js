@@ -1,7 +1,7 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import { productRouter } from "./routes/products.router.js";
-import { cartRouter } from "./routes/carts.router.js";
+import { productRouter } from "./modules/products/products.router.js";
+import { cartRouter } from "./modules/carts/carts.router.js";
 import { viewsRouter } from "./routes/views.routes.js";
 import { products, configSocketServer } from "./utils.js";
 import { Server } from "socket.io";
@@ -11,11 +11,12 @@ import cookieRouter from "./routes/cookies.router.js";
 import session from "express-session";
 import fileStore from "session-file-store";
 import sessionRouter from "./routes/session.router.js";
-import userRouter from "./routes/users.router.js";
+import userRouter from "./modules/users/users.router.js";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import config from "./config/config.js";
+import UserRouter from "./modules/users/users.router.js";
 
 const app = express();
 const fileStorage = fileStore(session);
@@ -50,7 +51,7 @@ app.use("/", viewsRouter);
 
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
-app.use("/api/users", userRouter);
+app.use("/api/users", new UserRouter().getRouter());
 app.use("/cookies", cookieRouter);
 app.use("/session", sessionRouter);
 const environment = async () => {

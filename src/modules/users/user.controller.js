@@ -1,5 +1,5 @@
-import UserService from "../services/user.service.js";
-import { userModel } from "../models/user.models.js";
+import UserService from "./user.mongo.dao.js";
+import { userModel } from "./user.models.js";
 
 class UserController {
     constructor(){

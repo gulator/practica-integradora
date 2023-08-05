@@ -2,3 +2,7 @@ node_modules
 package-lock.json
 index.js
 .env
+/src/modules/users/user.controller - copia.js
+/src/modules/users/user.models - copia.js
+/src/modules/users/user.service - copia.js
+/src/modules/users/users.router - copia.js

@@ -1,5 +1,5 @@
-import ProductService from "../services/product.service.js";
-import { productModel } from "../../dao/models/product.model.js";
+import ProductService from "./product.service.js";
+import { productModel } from "./product.model.js";
 
 class ProductController {
     constructor() {
