@@ -80,7 +80,7 @@ export default class MyRouter {
 
 		if (!policies.includes(user.role?.toUpperCase())) {
 			return res
-				.sendStatus(403)
+				.status(403)
 				.send({ status: 'Auth Error', error: 'Forbidden' });
 		}
 

@@ -6,3 +6,8 @@ index.js
 /src/modules/users/user.models - copia.js
 /src/modules/users/user.service - copia.js
 /src/modules/users/users.router - copia.js
+/src/modules/products/product.controller - copia.js
+/src/modules/products/product.model - copia.js
+/src/modules/products/product.service - copia.js
+/src/modules/products/products.router - copia.js
+/src/modules/products/productManager - copia.js

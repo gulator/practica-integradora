@@ -3,12 +3,13 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
 import userService from "../modules/users/user.mongo.dao.js";
-// import userController from "../modules/users/user.controller.js";
-import UserFactory from "../modules/users/user.factory.js";
+import userController from "../modules/users/user.controller.js";
+import UserDTO from "../modules/users/user.dto.js";
+// import UserFactory from "../modules/users/user.factory.js";
 import { hashPassword, comparePassword } from "../utils.js";
 import config from "./config.js"; 
 
-let userController = new UserFactory ()
+// let userController = new UserFactory ()
 
 const LocalStrategy = local.Strategy;
 const jwtStrategy = Strategy;
@@ -22,7 +23,7 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         const { first_name, last_name, email, age } = req.body;
         try {
-          
+          let user = await userController.getByEmail(username)
           if (user) {
             return done(null, false);
           }
@@ -34,8 +35,7 @@ const initializePassport = () => {
             password: hashPassword(password),
           };
           let result = await userController.createUser(newUser);
-          delete result.password;
-          console.log(result);
+          // delete result.password;
           return done(null, result);
         } catch (error) {
           return done(error);
@@ -50,7 +50,6 @@ const initializePassport = () => {
       async (username, password, done) => {
         try {
           const user = await userController.getByEmail(username);
-          // console.log(user);
           if (!user) {
             return done(null, false);
           }

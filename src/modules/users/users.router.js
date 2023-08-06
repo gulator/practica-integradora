@@ -1,12 +1,12 @@
 import MyRouter from "../../routes/router.js";
-// import userController from "./user.controller.js";
+import userController from "./user.controller.js";
 import { generateToken } from "../../middlewares/jwt.middleware.js";
 import passport from "passport";
 import config from "../../config/config.js";
-import UserFactory from "./user.factory.js";
+// import UserFactory from "./user.factory.js";
 import jwt from "jsonwebtoken";
 
-let userController = new UserFactory ()
+// let userController = new UserFactory ()
 
 export default class UserRouter extends MyRouter {
   init() {
@@ -67,7 +67,7 @@ export default class UserRouter extends MyRouter {
       res.send({ error: "failed login" });
     });
 
-    this.get("/logout",['USER'], (req, res) => {
+    this.get("/logout",['PUBLIC'], (req, res) => {
       res.clearCookie("token");
       try {
         res.redirect("/login");
