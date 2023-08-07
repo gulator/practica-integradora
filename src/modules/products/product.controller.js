@@ -1,9 +1,12 @@
 import ProductService from "./product.service.js";
+import ProductRepository from "./product.repository.js";
+import { initializeDao, getDao } from "./product.factory.js";
 import { productModel } from "./product.model.js";
+await initializeDao()
 
 class ProductController {
     constructor() {
-      this.service = new ProductService(productModel);
+      this.repository = new ProductRepository(getDao());
     }
     async getAllproducts(limit = 10, page = 1, sort="sin", brand="nada", stock) {
       // console.log(`lim: ${limit}, page: ${page}, sorting: ${sort}, category: ${category}`)
@@ -29,13 +32,13 @@ class ProductController {
       else{
         filtro = {stock: {$gte: 0}}
       }
-      let queryResult = await this.service.getAllproducts(limit, page, sort, filtro)
+      let queryResult = await this.repository.getAllproducts(limit, page, sort, filtro)
     //   if (sort === "sin"){
         //   queryResult = await productModel.paginate(filtro, {page, limit, lean:true })
-        //   queryResult = await this.service.getAllproducts(limit, page, sort, filtro)
+        //   queryResult = await this.repository.getAllproducts(limit, page, sort, filtro)
     //   }else{
     //     //   queryResult = await productModel.paginate(filtro, {page, limit, sort:{price: sort}, lean:true })
-    //       queryResult = await this.service.paginate(filtro, {page, limit, sort:{price: sort}, lean:true })
+    //       queryResult = await this.repository.paginate(filtro, {page, limit, sort:{price: sort}, lean:true })
     //   }
       
       let links
@@ -94,25 +97,25 @@ class ProductController {
     }
   
     async getProduct(productId) {
-      return await this.service.getProduct(productId)
+      return await this.repository.getProduct(productId)
     }
   
     async addProduct(product) {
-      return await this.service.addProduct(product);
+      return await this.repository.addProduct(product);
     }
   
     async deleteProduct(productId) {
       if (!productId) {
         throw new Error("Faltan Campos");
       }
-      return await this.service.deleteProduct(productId);
+      return await this.repository.deleteProduct(productId);
     }
   
     async updateProduct(productId, data) {
       if (!productId) {
         throw new Error("Faltan Campos");
       }
-      return await this.service.updateProduct(productId, data);
+      return await this.repository.updateProduct(productId, data);
     }
   }
   

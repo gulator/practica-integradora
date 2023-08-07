@@ -2,14 +2,10 @@ import passport from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import local from "passport-local";
 import GithubStrategy from "passport-github2";
-import userService from "../modules/users/user.mongo.dao.js";
 import userController from "../modules/users/user.controller.js";
-import UserDTO from "../modules/users/user.dto.js";
-// import UserFactory from "../modules/users/user.factory.js";
+
 import { hashPassword, comparePassword } from "../utils.js";
 import config from "./config.js"; 
-
-// let userController = new UserFactory ()
 
 const LocalStrategy = local.Strategy;
 const jwtStrategy = Strategy;
@@ -53,7 +49,6 @@ const initializePassport = () => {
           if (!user) {
             return done(null, false);
           }
-          // console.log(comparePassword(user, password));
           if (!comparePassword(user, password)) return done(null, false);
           return done(null, user);
         } catch (error) {
