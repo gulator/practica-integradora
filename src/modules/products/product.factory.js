@@ -2,7 +2,7 @@ import config from "../../config/config.js";
 
 export let dao;
 
-export async function initializeDao(){
+export async function initializeDaoProducts(){
 switch (config.persistence) {
   case "MONGO":
     const { default: ProductsMongo } = await import("./product.mongo.dao.js");
@@ -15,7 +15,7 @@ switch (config.persistence) {
   //   break;
 }}
 
-export function getDao(){
+export function getDaoProducts(){
   return dao
 }
 

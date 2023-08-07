@@ -18,6 +18,7 @@ import initializePassport from "./config/passport.config.js";
 import config from "./config/config.js";
 import UserRouter from "./modules/users/users.router.js";
 import ProductRouter from "./modules/products/products.router.js";
+import TicketRouter from "./modules/tickets/ticket.router.js";
 
 const app = express();
 const fileStorage = fileStore(session);
@@ -53,6 +54,7 @@ app.use("/", viewsRouter);
 app.use("/api/products", new ProductRouter().getRouter());
 app.use("/api/carts", cartRouter);
 app.use("/api/users", new UserRouter().getRouter());
+app.use("/api/tickets", new TicketRouter().getRouter())
 app.use("/cookies", cookieRouter);
 app.use("/session", sessionRouter);
 const environment = async () => {

@@ -1,12 +1,12 @@
 import ProductService from "./product.service.js";
 import ProductRepository from "./product.repository.js";
-import { initializeDao, getDao } from "./product.factory.js";
+import { initializeDaoProducts, getDaoProducts } from "./product.factory.js";
 import { productModel } from "./product.model.js";
-await initializeDao()
+await initializeDaoProducts()
 
 class ProductController {
     constructor() {
-      this.repository = new ProductRepository(getDao());
+      this.repository = new ProductRepository(getDaoProducts());
     }
     async getAllproducts(limit = 10, page = 1, sort="sin", brand="nada", stock) {
       // console.log(`lim: ${limit}, page: ${page}, sorting: ${sort}, category: ${category}`)
