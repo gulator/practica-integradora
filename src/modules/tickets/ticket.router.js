@@ -20,8 +20,8 @@ export default class TicketRouter extends MyRouter {
           "purchaser": userMail,
           ...payload,
         });
-        console.log(ticket)
-        // res.status(ticket.status).send({ msg: ticket.msg });
+        
+        res.status(ticket.status).send({ msg: ticket.msg, ticket:ticket.ticketData });
       } catch (err) {
         res.status(500).send({ error: err });
       }

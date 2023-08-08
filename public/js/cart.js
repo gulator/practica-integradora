@@ -45,8 +45,9 @@ cerrarCarrito.addEventListener("click", (e) => {
       })
       .then((response) => response.json())
       .then((data)=> {
-        localStorage.removeItem('idCarrito');
-        window.location.href = '../../products';
+        console.log(data)
+        // localStorage.removeItem('idCarrito');
+        // window.location.href = '../../products';
       })
       .catch((err)=>{
         console.log('An error occurred:', err)
@@ -73,10 +74,10 @@ for (let row of rows) {
   const quantity = parseInt(quantityInput.value);
   const price = parseFloat(priceCell.textContent.replace("$", ""));
   
-  products.push({"product":productId, "quantity":quantity})
+  products.push({"product":productId, "quantity":quantity, "amount":quantity*price})
   // Calculate the product of quantity and price
-  const total = quantity * price;
-  amount = amount + total  
+  // const total = quantity * price;
+  // amount = amount + total  
   
 }
 return ({"purchase_datetime": date, "amount":amount, "products":products})
