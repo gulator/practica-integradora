@@ -43,7 +43,7 @@ export function configSocketServer(httpServer) {
     const producto = {
       id: faker.database.mongodbObjectId(),
       title: faker.commerce.productName(),
-      price: faker.commerce.price({min:6000, max: 9000}),
+      price: faker.commerce.price({min:6000, max: 9000, dec: 0}),
       color: faker.color.human(),
       code: faker.string.numeric(6)
     }
