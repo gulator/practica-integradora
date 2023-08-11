@@ -45,12 +45,13 @@ this.get("/mockingproducts",['PUBLIC'], async (req, res) => {
         let mockProducts = []
         for(let i= 0; i < 100; i++){
             mockProducts.push(generateProduct())
+            // console.log(i)
         }
-        console.log('hola')
-        res.send('hola')
+        // console.log('hola')
+        res.send(mockProducts)
         
     }catch(err){
-        res.status(500).send(err)
+        res.status(500).send({err})
     }
 })
 
