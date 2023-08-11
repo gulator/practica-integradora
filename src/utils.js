@@ -1,7 +1,8 @@
 import { Server } from "socket.io"
 import { mensajes } from "./app.js";
 import messageService from "./dao/services/message.service.js";
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
+import {faker} from '@faker-js/faker'
 
 let products = []
 export {products}
@@ -35,4 +36,17 @@ export function configSocketServer(httpServer) {
   }
   export const comparePassword = (user, pass) => {
    return bcrypt.compareSync (pass, user.password)
+  }
+
+  export function generateProduct(){
+  
+    const producto = {
+      id: faker.database.mongodbObjectId(),
+      title: faker.commerce.productName(),
+      price: faker.commerce.price({min:6000, max: 9000}),
+      color: faker.commerce.color(),
+      code: faker.string.numeric({min: 200000, max: 299999})
+    }
+    
+    return producto
   }

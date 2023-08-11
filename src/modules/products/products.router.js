@@ -2,7 +2,7 @@ import { Router } from "express";
 import ProductManager from "./productManager.js";
 import productService from "./product.service.js";
 import productController from "./product.controller.js";
-import { products } from "../../utils.js";
+import { generateProduct } from "../../utils.js";
 import { socketServer } from "../../app.js";
 import MyRouter from "../../routes/router.js";
 const pm = new ProductManager('./products.json')
@@ -38,6 +38,19 @@ this.get('/',['USER'], async (req, res) => {
      
     catch (err) {
         res.send(err)
+    }
+})
+this.get("/mockingproducts",['PUBLIC'], async (req, res) => {
+    try{
+        let mockProducts = []
+        for(let i= 0; i < 100; i++){
+            mockProducts.push(generateProduct())
+        }
+        console.log('hola')
+        res.send('hola')
+        
+    }catch(err){
+        res.status(500).send(err)
     }
 })
 
@@ -117,7 +130,11 @@ this.delete("/:pid",['ADMIN'], async (req, res) => {
     catch (err) {
         res.status(500).send(err)
     }
-})}
+})
+
+
+
+}
 }
 // export { productRouter }
 
