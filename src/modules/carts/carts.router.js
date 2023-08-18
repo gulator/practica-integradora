@@ -11,6 +11,7 @@ cartRouter.post('/', async (req, res) => {
     try {
         //res.status(201).send(await cm.addCart())
         let newCart = await cartController.addCart()
+        req.logger.info(`Cart created with id: ${newCart._id}`)
         res.status(201).send(newCart._id)
     }
     catch (err) {
@@ -24,6 +25,7 @@ cartRouter.get('/:cid', async (req, res) => {
         //let cart = await cm.getCartById(cid)
         let cart = await cartController.getCartById(cid)
         if (!cart) {
+            req.logger.warning(`Cart not found with id ${cid}`)
             res.status(404).send({ error: `no existe carrito con id: ${cid}` })
         } else {
             res.send(cart)
@@ -69,7 +71,7 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
         let producto = { "pid": pid, "quantity": req.body.quantity }
         //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
         let addedProduct = await cartController.addProduct(cid, producto)
-        
+        req.logger.info(`Product added to cart ${cid}`)
         res.status(200).send(addedProduct)
     }
     catch (err) {

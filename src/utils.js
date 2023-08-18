@@ -1,8 +1,10 @@
 import { Server } from "socket.io"
 import { mensajes } from "./app.js";
 import messageService from "./dao/services/message.service.js";
+import config from "./config/config.js";
 import bcrypt from 'bcrypt';
 import {faker} from '@faker-js/faker'
+import winston from 'winston'
 
 let products = []
 export {products}
@@ -49,3 +51,5 @@ export function configSocketServer(httpServer) {
     }
     return producto
   }
+
+ 

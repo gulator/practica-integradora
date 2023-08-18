@@ -27,6 +27,7 @@ export default class UserRouter extends MyRouter {
       }),
       async (req, res) => {
         if (!req.user) {
+          req.logger.error('credenciales invalidas')
           return res
             .status(400)
             .send({ status: "error", error: "Credenciales invalidas" });
@@ -46,6 +47,7 @@ export default class UserRouter extends MyRouter {
         };
         req.user = user;
         const token = generateToken(user);
+        req.logger.info('user logged in')
         res
           .cookie("token", token, {
             httpOnly: true,
@@ -63,12 +65,14 @@ export default class UserRouter extends MyRouter {
         res.status(200).send({ message: "Private route", user: req.user });
       }
     );
-    this.get("/failedlogin", async (req, res) => {
+    this.get("/failedlogin", ['PUBLIC'],async (req, res) => {
+      req.logger.error('Failed to login - invalid credentials')
       res.send({ error: "failed login" });
     });
 
     this.get("/logout",['PUBLIC'], (req, res) => {
       res.clearCookie("token");
+      req.logger.info('user logged out')
       try {
         res.redirect("/login");
       } catch {
@@ -82,7 +86,7 @@ export default class UserRouter extends MyRouter {
           let userId = req.user._id;
           let cid = req.params.cid;
           let addedProduct = await userController.addCartToUser(userId, cid);
-      
+          
           res.status(200).send(addedProduct);
         } catch (err) {
           res.send(err);

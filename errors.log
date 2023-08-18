@@ -1,0 +1,27 @@
+
+{"level":"info","message":"user logged"}
+{"level":"info","message":"user logged"}
+{"level":"info","message":"user logged out"}
+{"level":"info","message":"user logged in"}
+{"level":"info","message":"user logged in"}
+{"level":"info","message":"user logged out"}
+{"level":"error","message":"Failed to login - invalid credentials"}
+{"level":"error","message":"Failed to login - invalid credentials"}
+{"level":"info","message":"user logged in"}
+{"level":"info","message":"user logged in"}
+{"level":"info","message":"user logged out"}
+{"level":"info","message":"user logged in"}
+{"level":"info","message":"user logged in"}
+{"level":"info","message":"Product added to cart 64d168f4fd0abb7019ddb60d"}
+{"level":"debug","message":"debug msg"}
+{"level":"info","message":"debug msg"}
+{"level":"warning","message":"debug msg"}
+{"level":"debug","message":"debug msg"}
+{"level":"info","message":"debug msg"}
+{"level":"warning","message":"debug msg"}
+{"level":"debug","message":"debug msg"}
+{"level":"info","message":"debug msg"}
+{"level":"warning","message":"debug msg"}
+{"level":"debug","message":"debug msg"}
+{"level":"info","message":"debug msg"}
+{"level":"warning","message":"debug msg"}

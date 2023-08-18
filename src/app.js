@@ -3,7 +3,8 @@ import handlebars from "express-handlebars";
 // import { productRouter } from "./modules/products/products.router.js";
 import { cartRouter } from "./modules/carts/carts.router.js";
 import { viewsRouter } from "./routes/views.routes.js";
-import { products, configSocketServer } from "./utils.js";
+import { products, configSocketServer} from "./utils.js";
+import { addLogger } from "./logger.js";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
@@ -27,13 +28,14 @@ export { mensajes };
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(addLogger)
 app.use(cookieParser(config.cookieKey));
 app.use(
   session({
     store: MongoStore.create({
       mongoUrl:
         config.mongoUrl,
-      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true } ,
       ttl: 3600,
     }),
     secret: config.cookieKey,
@@ -57,6 +59,18 @@ app.use("/api/users", new UserRouter().getRouter());
 app.use("/api/tickets", new TicketRouter().getRouter())
 app.use("/cookies", cookieRouter);
 app.use("/session", sessionRouter);
+app.get("/loggerTest", (req,res) => {
+  try{
+    req.logger.debug('debug msg')
+    req.logger.info('debug msg')
+    req.logger.warning('warning msg')
+    res.send('loggerTest')
+  }catch(err){
+    req.logger.error('error msg')
+    req.logger.fatal('fatal msg')
+    res.status(500).send('err')
+  }
+})
 const environment = async () => {
   mongoose.connect(config.mongoUrl);
 };
@@ -69,3 +83,4 @@ const httpServer = app.listen(config.port, () => {
 const socketServer = configSocketServer(httpServer);
 
 export { socketServer };
+ 

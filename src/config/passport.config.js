@@ -47,6 +47,7 @@ const initializePassport = () => {
         try {
           const user = await userController.getByEmail(username);
           if (!user) {
+            console.log('sin usuario')
             return done(null, false);
           }
           if (!comparePassword(user, password)) return done(null, false);
