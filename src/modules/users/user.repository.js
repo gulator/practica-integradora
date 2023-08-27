@@ -19,6 +19,9 @@ export default class UserRepository {
     async findById(id){
         return this.dao.findById(id)
     }
+    async changepsw(newpsw, userData){
+        return this.dao.changepsw(newpsw, userData)
+    }
 
     async addCartToUser(userId, cid) { 
           

@@ -1,36 +1,53 @@
 // import UserService from "./user.mongo.dao.js";
 import { userModel } from "./user.models.js";
+import { comparePassword, hashPassword } from "../../utils.js";
 import { initializeDao, getDao } from "./user.factory.js";
 import UserRepository from "./user.repository.js";
 
-await initializeDao()
+await initializeDao();
 
 // const daoModel = dao
 class UserController {
-    constructor(){
-        this.repository = new UserRepository(getDao())
-        // this.repository = new UserRepository(dao)
-    }
+  constructor() {
+    this.repository = new UserRepository(getDao());
+    // this.repository = new UserRepository(dao)
+  }
 
-    async createUser(user){
-        return await this.repository.createUser(user)
-    }
-    async getAll(){
-        return this.repository.getAll()
-            }
-    async getByEmail(mail){
-        return this.repository.getByEmail(mail)
-    }
-    async findById(id){
-        return this.repository.findById(id)
-    }
+  async createUser(user) {
+    return await this.repository.createUser(user);
+  }
+  async getAll() {
+    return this.repository.getAll();
+  }
+  async getByEmail(mail) {
+    return this.repository.getByEmail(mail);
+  }
+  async findById(id) {
+    return this.repository.findById(id);
+  }
 
-    async addCartToUser(userId, cid) { 
-          
-          return await this.repository.addCartToUser(userId, cid);
-        
+  async changepsw (newpsw, userData){
+    const hashPsw = hashPassword(newpsw)
+    return await this.repository.changepsw(hashPsw, userData)
+  }
+
+  async addCartToUser(userId, cid) {
+    return await this.repository.addCartToUser(userId, cid);
+  }
+
+  async checkpsw(newpsw, user){
+    let userData = await this.findById(user._id)
+    let result = comparePassword(userData, newpsw)
+    if (result !== false){
+        return ({status: 400, message: 'New password is the same as the current password'})
+    }else{
+        const newPsw = await this.changepsw(newpsw, userData)
+        return ({status: 200, message: 'Password changed succesfully'})
     }
+    
+
+  }
 }
 
-const userController = new UserController()
-export default userController
+const userController = new UserController();
+export default userController;

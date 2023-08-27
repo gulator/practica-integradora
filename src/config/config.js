@@ -13,5 +13,7 @@ export default{
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: process.env.CALL_BACK_URL,
     persistence: process.env.PERSISTENCE,
-    environment: process.env.ENVIRONMENT
+    environment: process.env.ENVIRONMENT,
+    mail_user: process.env.MAIL_USER,
+    mail_pass: process.env.MAIL_PASS
 }

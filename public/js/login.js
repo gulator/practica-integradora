@@ -19,7 +19,7 @@ function login() {
       })
       .then((res) => {
         // window.location.href = '/current';
-        window.location.href = '/login';
+        window.location.href = 'http://localhost:8080/login';
       })
       .catch((err) => {
         console.error('Error:', err)

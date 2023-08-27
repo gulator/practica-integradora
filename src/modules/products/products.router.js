@@ -70,11 +70,10 @@ this.get("/:pid", ['USER'],async (req, res) => {
     }
 })
 
-this.post("/",['ADMIN'], async (req, res) => {
+this.post("/",['PREMIUM','ADMIN'], async (req, res) => {
     try {
-        console.log(req.body)
-        //let value = await pm.addProduct(req.body)
-        let value = await productController.addProduct(req.body)
+        // console.log(req.body)
+        let value = await productController.addProduct({...req.body, owner: req.user._id })
         if (value === false) {
             res.status(400).send({ status: 400, error: 'Campos incompletos o incorrectos' })
         } else if (value === 'code repeated') {
@@ -83,6 +82,7 @@ this.post("/",['ADMIN'], async (req, res) => {
         else {
             //socketServer.emit('update', await pm.getproducts())
             socketServer.emit('update', await productController.getAllproducts())
+            req.logger.info(`Product ${value._id} created by ${value.owner} on ${new Date().toLocaleString()}`);
             res.status(201).send(value)
         }
 

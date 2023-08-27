@@ -10,7 +10,7 @@ import { mensajes } from "../app.js";
 import { socketServer } from "../app.js";
 import cartService from "../modules/carts/cart.service.js";
 import { isAuth, isLogged } from "../middlewares/auth.js";
-import { authToken, middlewarePassportJWT } from "../middlewares/jwt.middleware.js";
+import { authToken, middlewarePassportJWT, authMailToken } from "../middlewares/jwt.middleware.js";
 import passport from "passport";
 import config from "../config/config.js";
 const pm = new ProductManager("./products.json");
@@ -170,5 +170,18 @@ viewsRouter.get("/login", isLogged, (req, res) => {
 viewsRouter.get("/register", isLogged, (req, res) => {
   res.render("register");
 });
+viewsRouter.get("/userinfo",middlewarePassportJWT,async(req,res)=>{
+  const user = req.user
+  res.render('current',{user})
+})
+viewsRouter.get("/resetpassword",middlewarePassportJWT,async(req,res)=>{
+  const user = req.user
+  res.render('newreset',{user})
+})
+viewsRouter.get("/changepsw/:token", async(req,res)=>{
+  let token = req.params.token
+  const user = req.user
+  res.render('changepsw',{token, user})
+})
 
 export { viewsRouter };

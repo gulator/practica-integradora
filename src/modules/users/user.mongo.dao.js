@@ -26,6 +26,10 @@ export default class UserMongoDAO {
           return await this.model.updateOne({ _id: userId }, user);
         
     }
+    async changepsw(newpsw, userData){        
+          
+          return await this.model.updateOne({ _id: userData._id }, { $set: { password: newpsw } });
+    }
 }
 
 //export default UserService = new UserService()
