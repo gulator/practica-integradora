@@ -53,7 +53,7 @@ viewsRouter.get("/", middlewarePassportJWT, async (req, res) => {
       prevLink: newProductList.links + `page=${newProductList.prevPage}`,
       nextLink: newProductList.links + `page=${newProductList.nextPage}`,
     };
-
+    
     res.render("home", {result, user});
   } catch (err) {
     res.status(500).send(err);
@@ -177,6 +177,10 @@ viewsRouter.get("/userinfo",middlewarePassportJWT,async(req,res)=>{
 viewsRouter.get("/resetpassword",middlewarePassportJWT,async(req,res)=>{
   const user = req.user
   res.render('newreset',{user})
+})
+viewsRouter.get("/newproduct",middlewarePassportJWT,async(req,res)=>{
+  const user = req.user
+  res.render('newproduct',{user})
 })
 viewsRouter.get("/changepsw/:token", async(req,res)=>{
   let token = req.params.token

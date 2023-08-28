@@ -14,7 +14,11 @@
       src="https://kit.fontawesome.com/a4f17918d6.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
@@ -34,8 +38,24 @@
             <a class="nav-link" id="carrito" href="#">Carrito</a>
           </li>
           {{#if user}}
+            {{#ifEquals user.role 'premium'}}
+              <li class="nav-item">
+                <a class="nav-link" href="/newproduct" id="newproduct">New
+                  Product</a>
+              </li>
+            {{/ifEquals}}
+            {{#ifEquals user.role 'admin'}}
+              <li class="nav-item">
+                <a class="nav-link" href="/newproduct" id="newproduct">New
+                  Product</a>
+              </li>
+            {{/ifEquals}}
             <li class="nav-item">
-              <a href="/userinfo"><img class="profile-img small-icon" src="/img/generic.png" alt="profile image"></a>
+              <a href="/userinfo"><img
+                  class="profile-img small-icon"
+                  src="/img/generic.png"
+                  alt="profile image"
+                /></a>
               <a
                 class="nav-link"
                 id="logout"
@@ -52,7 +72,10 @@
     <footer>
 
     </footer>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"

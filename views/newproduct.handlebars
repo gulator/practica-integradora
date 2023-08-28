@@ -1,0 +1,32 @@
+<section class="card-user-container">
+    <div class="card-products">
+        <h3>Ingrese datos para el nuevo producto</h3>
+        <input class="formulario-changepsw" type="text" id="fieldtitle" placeholder="Titulo" name="title">
+        <select class="formulario-changepsw" name="brand" id="fieldbrand">
+        <option value="">Select Brand</option>
+        <option value="Adidas">Adidas</option>
+        <option value="Asics">Asics</option>
+        <option value="Puma">Puma</option>
+        <option value="Nike">Nike</option>
+        <option value="Reebok">Reebok</option>
+        </select>
+        <select class="formulario-changepsw" name="color" id="fieldcolor">
+        <option value="">Select Color</option>
+        <option value="Azul">Azul</option>
+        <option value="Blanco">Blanco</option>
+        <option value="Camel">Camel</option>
+        <option value="Negra">Negra</option>
+        <option value="Rojo">Rojo</option>
+        </select>
+        <input class="formulario-changepsw" type="number" id="fieldprice" placeholder="Precio" name="price">
+        <input class="formulario-changepsw" type="text" id="fieldcode" placeholder="Código" name="code">
+        <input class="formulario-changepsw" type="number" id="fieldstock" placeholder="Stock" name="stock">
+        <input class="formulario-changepsw" type="hidden" id="fieldowner" placeholder="Stock" name="owner" value ={{user._id}}>
+        <button id="prod-create">Crear Producto</button>
+    </div>
+</section>
+<script>
+    var token = "{{token}}";
+</script>
+<script src="../js/newproduct.js">
+</script>

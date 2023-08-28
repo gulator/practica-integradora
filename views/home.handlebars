@@ -44,23 +44,31 @@
     </div>
   </div>
   <div class="cards-container">
-    {{#each result.payload}}
-      <div class="card">
-        <div>
-          <ul>
-            <li class="title">{{this.title}}</li>
-            <li class="description">Color:{{this.color}}
-              marca:{{this.brand}}</li>
-            <li class="price">${{this.price}}</li>
-            <li class="stock">Stock:{{this.stock}}</li>
-            <li class="code">Código:{{this.code}}</li>
-            <li class="code">id: {{this._id}}</li>
-          </ul>
-          <button class="btn">Agregar</button>
-        </div>
+      {{#each result.payload}}
+        <div class="card">
+          <div>
+            <ul>
+              <li class="title">{{this.title}}</li>
+              <li class="description">Color:{{this.color}}
+                marca:{{this.brand}}</li>
+              <li class="price">${{this.price}}</li>
+              <li class="stock">Stock:{{this.stock}}</li>
+              <li class="code">Código:{{this.code}}</li>
+              <li class="code">id: {{this._id}}</li>
+            </ul>
+            <button class="btn">Agregar</button>
+            {{#ifEquals ../user.role 'admin'}}
+            <button class="btn-borrar">borrar</button>
+            {{/ifEquals}}
+            {{#ifEquals ../user.role 'premium'}}
+              {{#ifEquals this.owner ../user.email}}
+                <button class="btn-borrar">borrar</button>
+              {{/ifEquals}}
+            {{/ifEquals}}
+          </div>
 
-      </div>
-    {{/each}}
+        </div>
+      {{/each}}
   </div>
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">

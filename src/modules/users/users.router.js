@@ -72,8 +72,9 @@ export default class UserRouter extends MyRouter {
     });
 
     this.get("/logout", ["PUBLIC"], (req, res) => {
-      res.clearCookie("token");
+      let user = req.user
       req.logger.info(`user ${user._id} logged out - ${new Date().toLocaleString()}`);
+      res.clearCookie("token");
       try {
         res.redirect("/login");
       } catch {

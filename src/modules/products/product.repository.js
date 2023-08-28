@@ -23,4 +23,5 @@ export default class ProductRepository{
       async updateProduct(productId, data) {
         return await this.dao.updateProduct(productId, data);
       }
+
     }

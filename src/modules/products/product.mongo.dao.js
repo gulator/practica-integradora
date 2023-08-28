@@ -32,6 +32,7 @@ export default class ProductMongoDAO {
   async updateProduct(productId, data) {
     return await this.model.updateOne({ _id: productId }, data);
   }
+  
 }
 
 // const productService = new ProductService();

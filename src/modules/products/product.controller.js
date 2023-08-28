@@ -117,6 +117,7 @@ class ProductController {
       }
       return await this.repository.updateProduct(productId, data);
     }
+    
   }
   
   const productController = new ProductController();

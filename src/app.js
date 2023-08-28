@@ -46,7 +46,17 @@ app.use(
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
-app.engine("handlebars", handlebars.engine());
+
+const handlebarsInstance = handlebars.create({
+  helpers: {
+      ifEquals: function(arg1, arg2, options) {
+          return (arg1 === arg2) ? options.fn(this) : options.inverse(this);
+      }
+  }
+});
+
+
+app.engine("handlebars", handlebarsInstance.engine);
 app.set("views", "./views");
 app.set("view engine", "handlebars");
 app.use(express.static("./public"));

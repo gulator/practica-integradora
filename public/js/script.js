@@ -55,6 +55,28 @@ for (let n of agregar) {
   });
 }
 
+let borrarProducto = document.querySelectorAll(".btn-borrar");
+for (let n of borrarProducto) {
+  n.addEventListener("click", (e) => {
+    e.preventDefault();
+    // let cid = localStorage.getItem("idCarrito");
+    let elemento = e.target;
+    let idProducto = elemento.parentElement.children[0].children[5].innerText;
+    let pid = idProducto.slice(4);
+    // console.log(pid);
+    fetch(`/api/products/${pid}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then((response) => response.json())
+      .then((datos) => {
+        console.log(datos);
+      });
+  });
+}
+
 let borrar = document.querySelectorAll(".fa-rectangle-xmark");
 for (let n of borrar) {
   n.addEventListener("click", (e) => {

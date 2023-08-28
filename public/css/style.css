@@ -187,6 +187,18 @@ td{
     flex-direction: column;
     justify-content: start;
 }
+.card-products{
+    box-sizing: border-box;
+    padding: 20px;
+    width: 600px;
+    height: 500px;
+    background: linear-gradient(19deg, #3EECAC 0%, #EE74E1 100%);
+    
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
 .fa-arrows-rotate{
     margin-left: 5px;
     color: green;
@@ -278,7 +290,7 @@ td{
     margin-top: 5px;
     width: 99%;
 }
-#psw-reset{
+#psw-reset, #prod-create{
     height: 50px;
     width: auto;
     border-radius: 5px;
@@ -295,12 +307,27 @@ td{
     color: #fafafa;
     animation: 200ms ease-in-out;
 }
+.btn-borrar{
+    cursor: pointer;
+    height: 35px;
+    width: 80px;
+    background: linear-gradient(to top, #7c343e, #b14a58);
+    border: none;
+    border-radius: 8px;
+    color: #fafafa;
+    animation: 200ms ease-in-out;
+}
 
 .btn:hover{
     background: linear-gradient(to top, #47b092, #c6ffe4);
     /* border: 1px solid #2c6857; */
     box-shadow: 2px 2px 4px rgb(159, 159, 159);
 }
+.btn-borrar:hover{
+    background: linear-gradient(to top, #7c343e, #f6798a);
+    box-shadow: 2px 2px 4px rgb(159, 159, 159);
+}
+
 
 .btn:active{
     background: linear-gradient(to bottom, #347c68, #99f2c8)
