@@ -139,6 +139,15 @@ export default class UserRouter extends MyRouter {
     this.get("/validatetoken/:token",['USER'], authMailToken, async(req,res)=>{
       // res.send({status: 200, message: 'Valid Token'})
     })
+    this.put('/premium/:uid', ['USER','PREMIUM'], async(req, res)=>{
+      const uid = req.params.uid
+      const result = await userController.changeRole(uid)
+      const user = req.user
+      user.role = result.role
+      req.user = user      
+      
+      res.send({result, user})
+    })
     this.get("/me", ["USER", "ADMIN"], (req, res) => {
       res.status(200).send({ user: req.user });
     });
@@ -146,5 +155,6 @@ export default class UserRouter extends MyRouter {
     this.get("/admin", ["ADMIN"], (req, res) => {
       res.status(200).send({ user: req.user });
     });
+
   }
 }

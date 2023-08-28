@@ -2,6 +2,7 @@ import { Router } from "express";
 import CartManager from "./cartManager.js";
 import cartService from "./cart.service.js";
 import cartController from "./cart.controller.js";
+import productController from "../products/product.controller.js";
 
 const cm = new CartManager('./cart.json')
 
@@ -68,11 +69,20 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
     try {
         let cid = req.params.cid
         let pid = req.params.pid
-        let producto = { "pid": pid, "quantity": req.body.quantity }
+        let user = req.user
+        let productFound = await productController.getProduct(pid)
+
+        if (user.email === productFound[0].owner){
+            res.send({status: 400, message: "No se puede agregar un producto creado por usted"})
+        } else{
+            let producto = { "pid": pid, "quantity": req.body.quantity }
         //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
         let addedProduct = await cartController.addProduct(cid, producto)
         req.logger.info(`Product added to cart ${cid}`)
-        res.status(200).send(addedProduct)
+        res.send({status: 200, message: `Producto ${productFound[0].title} agregado al carrito`})
+        }
+
+        
     }
     catch (err) {
         res.send(err)

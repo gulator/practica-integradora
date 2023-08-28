@@ -290,7 +290,7 @@ td{
     margin-top: 5px;
     width: 99%;
 }
-#psw-reset, #prod-create{
+#psw-reset, #prod-create, #change-role{
     height: 50px;
     width: auto;
     border-radius: 5px;

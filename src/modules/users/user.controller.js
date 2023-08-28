@@ -26,6 +26,19 @@ class UserController {
     return this.repository.findById(id);
   }
 
+  async changeRole (id){
+    const user = await this.findById(id);
+    if (user.role === 'user'){
+      await this.repository.changeRole(id, 'premium')
+      return {status:200, message: 'Role cambiado a Premium', role: 'premium'}
+    }else if (user.role === 'premium'){
+      await this.repository.changeRole(id, 'user')
+      return {status:200, message: 'Role cambiado a User', role: 'user'}
+    }else{
+      return {status:400, message: 'Admin no puede cambiar de Role'}
+    }
+  }
+
   async changepsw (newpsw, userData){
     const hashPsw = hashPassword(newpsw)
     return await this.repository.changepsw(hashPsw, userData)

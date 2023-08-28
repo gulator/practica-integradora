@@ -22,6 +22,9 @@ export default class UserRepository {
     async changepsw(newpsw, userData){
         return this.dao.changepsw(newpsw, userData)
     }
+    async changeRole(id, role){
+        return this.dao.changeRole(id, role)
+    }
 
     async addCartToUser(userId, cid) { 
           

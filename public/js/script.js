@@ -36,11 +36,9 @@ for (let n of agregar) {
   n.addEventListener("click", (e) => {
     e.preventDefault();
     let cid = localStorage.getItem("idCarrito");
-    console.log(cid);
     let elemento = e.target;
     let idProducto = elemento.parentElement.children[0].children[5].innerText;
     let pid = idProducto.slice(4);
-    console.log(pid);
     fetch(`/api/carts/${cid}/product/${pid}`, {
       method: "POST",
       headers: {
@@ -50,7 +48,37 @@ for (let n of agregar) {
     })
       .then((response) => response.json())
       .then((datos) => {
-        console.log(datos);
+        console.log(datos)
+        console.log(datos.status)
+        if(datos.status === 200){
+          Toastify({
+            text: `${datos.message}`,
+            duration: 3000,
+            gravity: "bottom",
+            position: "right",
+            style: {
+              background: "linear-gradient(132deg, #F4D03F 0%, #16A085 100%)",
+              color: 'black',
+              fontWeight: 'white',
+              borderRadius: "8px"
+            },
+          }).showToast();
+        }else if (datos.status === 400){
+          Toastify({
+            text: `${datos.message}`,
+            duration: 3000,
+            gravity: "bottom",
+            position: "right",
+            style: {
+              background: "linear-gradient(147deg, #ff1b53 0%, #860000 74%)",
+              color: 'white',
+              fontWeight: 'white',
+              borderRadius: "8px"
+            },
+          }).showToast();
+        }else{
+          console.log(datos)
+        }
       });
   });
 }
