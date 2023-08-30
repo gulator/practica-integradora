@@ -1,0 +1,11 @@
+paths:
+  /api/users:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+       - users
+  /login:
+    get:
+      summary: login
+      tags:
+      - users

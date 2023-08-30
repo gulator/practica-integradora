@@ -6,6 +6,8 @@ import { viewsRouter } from "./routes/views.routes.js";
 import { products, configSocketServer} from "./utils.js";
 import { addLogger } from "./logger.js";
 import { Server } from "socket.io";
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cookieRouter from "./routes/cookies.router.js";
@@ -43,9 +45,29 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+
+
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+const swaggerOptions = {
+  definition:{
+    openapi:'3.0.1',
+    info:{
+      title:'Documentacion para Lighting Legs Ecommerce',
+      version: '1.0.0',
+      description: 'Lighting legs API Information'
+    }
+  },
+apis:['**/docs/**/*.yaml']
+}
+
+
+
+const spects = swaggerJsDoc(swaggerOptions)
+
 
 const handlebarsInstance = handlebars.create({
   helpers: {
@@ -56,13 +78,15 @@ const handlebarsInstance = handlebars.create({
 });
 
 
+
+
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("views", "./views");
 app.set("view engine", "handlebars");
 app.use(express.static("./public"));
 
 app.use("/", viewsRouter);
-
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(spects))
 app.use("/api/products", new ProductRouter().getRouter());
 app.use("/api/carts", cartRouter);
 app.use("/api/users", new UserRouter().getRouter());
