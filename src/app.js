@@ -7,7 +7,7 @@ import { products, configSocketServer} from "./utils.js";
 import { addLogger } from "./logger.js";
 import { Server } from "socket.io";
 import swaggerJsDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import swaggerUiExpress from 'swagger-ui-express';
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cookieRouter from "./routes/cookies.router.js";
@@ -21,6 +21,7 @@ import initializePassport from "./config/passport.config.js";
 import config from "./config/config.js";
 import UserRouter from "./modules/users/users.router.js";
 import ProductRouter from "./modules/products/products.router.js";
+import TestProductRouter from "./modules/products/testproducts.router.js";
 import TicketRouter from "./modules/tickets/ticket.router.js";
 
 const app = express();
@@ -86,8 +87,9 @@ app.set("view engine", "handlebars");
 app.use(express.static("./public"));
 
 app.use("/", viewsRouter);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(spects))
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(spects))
 app.use("/api/products", new ProductRouter().getRouter());
+app.use("/api/testproducts", new TestProductRouter().getRouter());
 app.use("/api/carts", cartRouter);
 app.use("/api/users", new UserRouter().getRouter());
 app.use("/api/tickets", new TicketRouter().getRouter())

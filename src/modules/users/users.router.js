@@ -57,10 +57,20 @@ export default class UserRouter extends MyRouter {
           .send();
       }
     );
+    this.get('',['PUBLIC'], async(req, res)=>{
+      try{
+        const users = await userController.getAll()
+        res.status(200).send({users})
+
+      }catch(err){
+        res.status(500).send(err)
+      }
+      
+    })
 
     this.get(
       "/current",
-      ["USER"],
+      ["USER","PREMIUM"],
       passport.authenticate("current", { session: false }),
       async (req, res) => {
         res.status(200).send({ message: "Private route", user: req.user });
@@ -81,7 +91,7 @@ export default class UserRouter extends MyRouter {
         res.status(500).send("Internal error");
       }
     });
-    this.put('/changepsw',['USER'], async(req,res)=>{
+    this.put('/changepsw',['USER', 'PREMIUM', 'ADMIN'], async(req,res)=>{
       try{
         let newpsw = req.body
         let user = req.user
@@ -94,7 +104,7 @@ export default class UserRouter extends MyRouter {
       }
     })
 
-    this.post("/cart/:cid", ["USER"], async (req, res) => {
+    this.post("/cart/:cid", ["USER", "PREMIUM"], async (req, res) => {
       try {
         let userId = req.user._id;
         let cid = req.params.cid;
@@ -105,7 +115,7 @@ export default class UserRouter extends MyRouter {
         res.send(err);
       }
     });
-    this.get("/resetpsw", ["USER"], async (req, res) => {
+    this.get("/resetpsw", ["USER", "PREMIUM", "ADMIN"], async (req, res) => {
       try {
         let userInfo = req.user;
         const user = {
@@ -136,7 +146,7 @@ export default class UserRouter extends MyRouter {
         res.status(500).send(err);
       }
     });
-    this.get("/validatetoken/:token",['USER'], authMailToken, async(req,res)=>{
+    this.get("/validatetoken/:token",['USER','PREMIUM','ADMIN'], authMailToken, async(req,res)=>{
       // res.send({status: 200, message: 'Valid Token'})
     })
     this.put('/premium/:uid', ['USER','PREMIUM'], async(req, res)=>{

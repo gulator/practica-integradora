@@ -8,9 +8,9 @@ import MyRouter from "../../routes/router.js";
 const pm = new ProductManager('./products.json')
 
 // const productRouter = Router();
-export default class ProductRouter extends MyRouter{
+export default class TestProductRouter extends MyRouter{
 init(){
-this.get('/',['USER','PREMIUM','ADMIN'], async (req, res) => {
+this.get('/',['PUBLIC'], async (req, res) => {
     try {
         let {limit, page, sort, category} = req.query;
         const newProductList = await productController.getAllproducts(limit, page, sort, category);
@@ -55,7 +55,7 @@ this.get("/mockingproducts",['PUBLIC'], async (req, res) => {
     }
 })
 
-this.get("/:pid", ['USER','PREMIUM','ADMIN'],async (req, res) => {
+this.get("/:pid", ['PUBLIC'],async (req, res) => {
     try {
         let pid = req.params.pid
         let producto = await productController.getProduct(pid)
@@ -70,10 +70,11 @@ this.get("/:pid", ['USER','PREMIUM','ADMIN'],async (req, res) => {
     }
 })
 
-this.post("/",['PREMIUM','ADMIN'], async (req, res) => {
+this.post("/",['PUBLIC'], async (req, res) => {
     try {
         // console.log(req.body)
         let value = await productController.addProduct(req.body)
+        console.log(value)
         if (value === false) {
             res.status(400).send({ status: 400, error: 'Campos incompletos o incorrectos' })
         } else if (value === 'code repeated') {
@@ -92,7 +93,7 @@ this.post("/",['PREMIUM','ADMIN'], async (req, res) => {
 })
 
 
-this.put("/:pid",['PREMIUM','ADMIN'], async (req, res) => {
+this.put("/:pid",['PUBLIC'], async (req, res) => {
     try {
         let pid = req.params.pid
         //let productEdit = await pm.updateProduct(pid, req.body)
@@ -115,7 +116,7 @@ this.put("/:pid",['PREMIUM','ADMIN'], async (req, res) => {
     }
 })
 
-this.delete("/:pid",['PREMIUM','ADMIN'], async (req, res) => {
+this.delete("/:pid",['PUBLIC'], async (req, res) => {
     try {
         let pid = req.params.pid
         //let productDelete = await pm.deleteProduct(pid)

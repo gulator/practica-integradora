@@ -20,6 +20,15 @@ cartRouter.post('/', async (req, res) => {
     }
 })
 
+cartRouter.get('/', async (req, res)=>{
+    try{
+        let carts = await cartController.getAllCarts()
+        res.status(200).send(carts)
+    }catch (err){
+        res.status(500).send(err)
+    }
+})
+
 cartRouter.get('/:cid', async (req, res) => {
     try {
         let cid = req.params.cid
@@ -36,14 +45,34 @@ cartRouter.get('/:cid', async (req, res) => {
     }
 })
 
-cartRouter.get('/', async (req, res)=>{
+cartRouter.put ('/:cid', async (req, res)=>{
     try{
-        let carts = await cartController.getAllCarts()
-        res.status(200).send(carts)
-    }catch (err){
+        let cid = req.params.cid
+        let pid = req.body
+        let carrito = await cartController.editCart(cid, pid)
+        if(!carrito){
+            res.status(400).send('Carrito no encontrado')
+        }
+        res.status(200).send(carrito)
+    }
+    catch(err){
         res.status(500).send(err)
     }
 })
+
+cartRouter.delete('/:cid', async (req, res) => {
+    try{
+        let cid = req.params.cid
+        let deletedCart = await cartController.deleteCart(cid)
+        if(!deletedCart){
+            res.status(400).send('Carrito no encontrado')
+        }
+        res.status(204).send(deletedCart)
+    }catch(err){
+        res.status(500).send(err)
+    }
+})
+
 
 // cartRouter.post('/:cid/product/:pid', async (req, res) => {
 //     try {
@@ -81,7 +110,6 @@ cartRouter.post('/:cid/product/:pid', async (req, res) => {
         req.logger.info(`Product added to cart ${cid}`)
         res.send({status: 200, message: `Producto ${productFound[0].title} agregado al carrito`})
         }
-
         
     }
     catch (err) {
@@ -104,17 +132,7 @@ cartRouter.put('/:cid/products/:pid', async (req, res) => {
     }
 })
 
-cartRouter.put ('/:cid', async (req, res)=>{
-    try{
-        let cid = req.params.cid
-        let pid = req.body
-        let carrito = await cartController.editCart(cid, pid)
-        res.status(200).send(carrito)
-    }
-    catch(err){
-        res.status(500).send(err)
-    }
-})
+
 
 cartRouter.delete('/:cid/product/:pid', async (req, res) => {
 
@@ -123,22 +141,17 @@ cartRouter.delete('/:cid/product/:pid', async (req, res) => {
         let pid = req.params.pid
         // let deleteProduct = await cm.deleteProduct(parseInt(cid), parseInt(pid))
         let deleteProduct = await cartController.deleteProduct(cid, pid)
-            res.status(204).send(deleteProduct)
+        if(!deleteProduct){
+            res.status(404).send('carrito o producto no encontrado')
+        }
+        res.status(204).send(deleteProduct)
     } catch (err) {
         res.send(err)
     }
 
 })
 
-cartRouter.delete('/:cid', async (req, res) => {
-    try{
-        let cid = req.params.cid
-        let deletedCart = await cartController.deleteCart(cid)
-        res.status(204).send(deletedCart)
-    }catch(err){
-        res.status(500).send(err)
-    }
-})
+
 
 
 export { cartRouter }

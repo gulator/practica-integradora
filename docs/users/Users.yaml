@@ -1,11 +1,462 @@
 paths:
-  /api/users:
+  /api/products/:
     get:
-      summary: Obtiene todos los usuarios
+      summary: Obtener todos los productos
+      security:
+        - bearerAuth: []
+          roles:
+            - user
+            - premium
+            - admin
+      query_parameters:
+        limit: 10
+        page: 1
       tags:
-       - users
-  /login:
+        - products
+      responses:
+        200:
+          description: envia objeto con payload
+        401:
+          description: No autorizado
+        500:
+          description: Error del servidor
+    post:
+      summary: crear un producto
+      security:
+        - bearerAuth: []
+          roles:
+            - premium
+            - admin
+      tags:
+        - products
+      responses:
+        200:
+          description: envia objeto con payload
+        400:
+          description: Error de carga - Campos incompletos o code repetido
+        401:
+          description: No autorizado
+        500:
+          description: Error del servidor
+
+  /api/products/{pid}:
     get:
-      summary: login
+      summary: Obtener producto por id
+      security:
+        - bearerAuth: []
+          roles:
+            - user
+            - premium
+            - admin
+      parameters:
+       - in: path
+         name: pid
+         required: true
+         description: id del producto
+         schema:
+           type: string
       tags:
-      - users
+        - products
+      responses:
+        200:
+          description: envia objeto con datos del producto
+        400:
+          description: id no encontrado
+        401:
+          description: No autorizado
+        500:
+          description: Error del servidor
+
+    put:
+      summary: Editar producto por id
+      security:
+        - bearerAuth: []
+          roles:
+            - premium
+            - admin
+      parameters:
+       - in: path
+         name: pid
+         required: true
+         description: id del producto
+         schema:
+           type: string
+      tags:
+        - products
+      responses:
+        200:
+          description: envia objeto con datos del producto editado
+        400:
+          description: campo no válido / ID no puede ser modificado
+        401:
+          description: No autorizado
+        404:
+          description: El id no corresponde a un producto válido
+        500:
+          description: Error del servidor
+
+    delete:
+      summary: Borrar producto por id
+      security:
+        - bearerAuth: []
+          roles:
+            - premium
+            - admin
+      parameters:
+       - in: path
+         name: pid
+         required: true
+         description: id del producto
+         schema:
+           type: string
+      tags:
+        - products
+      responses:
+        200:
+          description: envia mensaje con id del producto borrado
+        401:
+          description: No autorizado
+        404:
+          description: El id no corresponde a un producto válido
+        500:
+          description: Error del servidor
+
+  /api/testproducts/:
+    get:
+      summary: Obtener todos los productos
+      query_parameters:
+        limit: 10
+        page: 1
+      tags:
+        - testproducts
+      responses:
+        200:
+          description: envia objeto con payload
+        401:
+          description: No autorizado
+        500:
+          description: Error del servidor
+    post:
+      summary: crear un producto
+      tags:
+        - testproducts
+      requestBody:
+        description: Datos del producto a crear
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'  
+      responses:
+        200:
+          description: envia objeto con payload
+        400:
+          description: Error de carga - Campos incompletos o code repetido
+        401:
+          description: No autorizado
+        500:
+          description: Error del servidor
+
+  /api/testproducts/{pid}:
+    get:
+      summary: Obtener producto por id
+      parameters:
+       - in: path
+         name: pid
+         required: true
+         description: id del producto
+         schema:
+           type: string
+      tags:
+        - testproducts
+      responses:
+        200:
+          description: envia objeto con datos del producto
+        400:
+          description: id no encontrado
+        401:
+          description: No autorizado
+        500:
+          description: Error del servidor
+    put:
+      summary: Editar producto por id
+      parameters:
+       - in: path
+         name: pid
+         required: true
+         description: id del producto
+         schema:
+           type: string
+      tags:
+        - testproducts
+      responses:
+        200:
+          description: envia objeto con datos del producto editado
+        400:
+          description: campo no válido / ID no puede ser modificado
+        401:
+          description: No autorizado
+        404:
+          description: El id no corresponde a un producto válido
+        500:
+          description: Error del servidor
+
+    delete:
+      summary: Borrar producto por id
+      parameters:
+       - in: path
+         name: pid
+         required: true
+         description: id del producto
+         schema:
+           type: string
+      tags:
+        - testproducts
+      responses:
+        200:
+          description: envia mensaje con id del producto borrado
+        401:
+          description: No autorizado
+        404:
+          description: El id no corresponde a un producto válido
+        500:
+          description: Error del servidor
+
+  /api/carts/:
+    get:
+      summary: Obtener todos los carritos
+      tags:
+        - carts
+      responses:
+        200:
+          description: envia objeto con payload
+        500:
+          description: Error del servidor
+    post:
+      summary: Crea nuevo carrito
+      tags:
+        - carts
+      responses:
+        201:
+          description: envia id del nuevo carrito creado
+        500:
+          description: Error del servidor
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtener carrito por id
+      parameters:
+       - in: path
+         name: cid
+         required: true
+         description: id del carrito
+         schema:
+           type: string
+      tags:
+        - carts
+      responses:
+        200:
+          description: envia objeto con payload
+        404:
+          description: carrito no encontrado
+        500:
+          description: Error del servidor
+    
+    put:
+      summary: Agrega un producto a un carrito específico
+      parameters:
+       - in: path
+         name: cid
+         required: true
+         description: id del carrito
+         schema:
+           type: string
+      requestBody:
+        description: id del producto a agregar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product/properties/_id'
+      tags:
+        - carts
+      responses:
+        200:
+          description: envia objeto con payload
+        404:
+          description: carrito no encontrado
+        500:
+          description: Error del servidor
+
+    delete:
+      summary: Borrar carrito por id
+      parameters:
+       - in: path
+         name: cid
+         required: true
+         description: id del carrito
+         schema:
+           type: string
+      tags:
+        - carts
+      responses:
+        204:
+          description: envia objeto con datos del carrito borrado
+        404:
+          description: carrito no encontrado
+        500:
+          description: Error del servidor
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Obtener carrito por id
+      parameters:
+      - in: path
+        name: cid
+        required: true
+        description: id del carrito
+        schema:
+          type: string
+      - in: path
+        name: pid
+        required: true
+        description: id del product a agregar
+        schema:
+          type: string
+      - in: query
+        name: user
+        required: true
+        description: mail del usuario
+        schema:
+          type: string
+        example: julian@mail.com
+      tags:
+        - carts
+      responses:
+        200:
+          description: envia objeto con payload
+        400:
+          description: No se puede agregar producto creado por el mismo usuario
+        404:
+          description: carrito no encontrado
+        500:
+          description: Error del servidor
+
+    delete:
+      summary: Borrar producto de un carrito
+      parameters:
+      - in: path
+        name: cid
+        required: true
+        description: id del carrito
+        schema:
+          type: string
+      - in: path
+        name: pid
+        required: true
+        description: id del product a borrar
+        schema:
+          type: string
+      
+      tags:
+        - carts
+      responses:
+        200:
+          description: envia objeto con payload
+        404:
+          description: product o carrito no encontrado
+        500:
+          description: Error del servidor
+
+  /api/carts/{cid}/products/{pid}:
+    put:
+      summary: editar cantidad de un producto
+      parameters:
+      - in: path
+        name: cid
+        required: true
+        description: id del carrito
+        schema:
+          type: string
+      - in: path
+        name: pid
+        required: true
+        description: id del producto
+        schema:
+          type: string
+      - in: query
+        name: quantity
+        required: true
+        description: nueva cantidad del producto
+        schema:
+          type: number
+        example: 2
+
+      tags:
+        - carts
+      responses:
+        204:
+          description: envia objeto con payload
+        404:
+          description: product o carrito no encontrado
+        500:
+          description: Error del servidor         
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo
+        title:
+          type: String
+          description: Descripcion del producto
+        brand:
+          type: String
+          description: Marca del producto
+        precio:
+         type: Number
+         description: Precio del producto
+        color:
+          type: String
+          description: Color del producto
+        code:
+          type: String
+          unique: true
+          description: Código del producto
+        stock:
+          type: number
+          description: Stock del producto
+        owner:
+          type: String
+          default: admin
+          description: Usuario creador del producto
+      example:
+        _id: ObjectId(648565076bf845a36dc73b92)
+        title: Remera Asics Camel Microfibra 
+        brand: Asics
+        price: 7450
+        color: Camel
+        code: 127578as
+        stock: 20
+        owner: julian@mail.com
+    
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo
+        products:
+          type: Array
+          description: Array con products
+      example:
+        _id: ObjectId(648565076bf845a36dc73b92)
+        products: [
+          product: {_id: ObjectId(648565076bf845a36dc73b9c), quantity: 2}
+        ]
+    
+  
+      
