@@ -17,6 +17,9 @@ export default class UserMongoDAO {
   async findById(id) {
     return this.model.findOne({ _id: id });
   }
+  async deleteUser(id){
+    return this.model.deleteOne({_id: id})
+  }
 
   async addCartToUser(userId, cid) {
     let user = await this.model.findOne({ _id: userId });

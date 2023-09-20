@@ -58,15 +58,8 @@ viewsRouter.get("/", middlewarePassportJWT, async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-  
-  // try {
-  //   // res.render("index", {user} );
-  //   res.render("home", {user} );
-  // } catch (err) {
-  //   res.status(500).send(err);
 }
-// else
-// res.redirect('/login')
+
 });
 
 viewsRouter.get("/products", middlewarePassportJWT, async (req, res) => {
@@ -116,10 +109,7 @@ viewsRouter.get("/carts/:cid",middlewarePassportJWT, async (req, res) => {
 });
 
 viewsRouter.get("/realtimeproducts",middlewarePassportJWT, async (req, res) => {
-  //let newProductList = await pm.getProducts()
-  // let newProductList = await productService.getAllproducts()
-  // products.push(newProductList)
-  // res.render('realTimeProducts',{newProductList})
+  
   try {
     let { limit, page, sort, brand, stock } = req.query;
     const newProductList = await productController.getAllproducts(

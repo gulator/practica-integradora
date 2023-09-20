@@ -14,9 +14,9 @@ carrito.addEventListener("click", () => {
     })
       .then((response) => response.json())
       .then((datos) => {
-        localStorage.setItem("idCarrito", datos);
+        localStorage.setItem("idCarrito", datos.payload);
         console.log(datos);
-        window.location.href = `/carts/${datos}`;
+        window.location.href = `/carts/${datos.payload}`;
         // Handle the response data
       })
       .catch((error) => {

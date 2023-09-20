@@ -4,19 +4,17 @@ import { generateToken, authMailToken } from "../../middlewares/jwt.middleware.j
 import passport from "passport";
 import MailingService from "../../config/mailing.service.js";
 import config from "../../config/config.js";
-// import UserFactory from "./user.factory.js";
-import jwt from "jsonwebtoken";
-
-// let userController = new UserFactory ()
+import jwt from "jsonwebtoken"; 
 
 export default class UserRouter extends MyRouter {
   init() {
     this.post(
       "/",
       ["PUBLIC"],
-      passport.authenticate("register", { failureRedirect: "/failedregister" }),
+      passport.authenticate("register", { failureRedirect: "/api/users/failedregister" }),
       async (req, res) => {
-        res.redirect("/login");
+        // res.redirect("/login");
+        res.status(201).send({payload: req.body})
       }
     );
 
@@ -57,7 +55,7 @@ export default class UserRouter extends MyRouter {
           .send();
       }
     );
-    this.get('',['PUBLIC'], async(req, res)=>{
+    this.get('',['ADMIN'], async(req, res)=>{
       try{
         const users = await userController.getAll()
         res.status(200).send({users})
@@ -80,6 +78,10 @@ export default class UserRouter extends MyRouter {
       req.logger.error("Failed to login - invalid credentials");
       res.send({ error: "failed login" });
     });
+    this.get('/failedregister',['PUBLIC'], async (req, res) => {
+      req.logger.error("Failed to Register - mail already in user");
+      res.send({ status: 400, message: "mail already in use" });
+    })
 
     this.get("/logout", ["PUBLIC"], (req, res) => {
       let user = req.user
@@ -157,6 +159,11 @@ export default class UserRouter extends MyRouter {
       req.user = user      
       
       res.send({result, user})
+    })
+    this.delete('/:uid', ['PUBLIC'], async(req, res)=>{
+      const uid = req.params.uid
+      const result = await userController.deleteuser(uid)
+      res.send({status: 204, payload: result})
     })
     this.get("/me", ["USER", "ADMIN"], (req, res) => {
       res.status(200).send({ user: req.user });

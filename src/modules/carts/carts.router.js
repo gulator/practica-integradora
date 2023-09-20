@@ -13,7 +13,7 @@ cartRouter.post('/', async (req, res) => {
         //res.status(201).send(await cm.addCart())
         let newCart = await cartController.addCart()
         req.logger.info(`Cart created with id: ${newCart._id}`)
-        res.status(201).send(newCart._id)
+        res.status(201).send({payload: newCart._id})
     }
     catch (err) {
         res.send(err)
@@ -38,7 +38,7 @@ cartRouter.get('/:cid', async (req, res) => {
             req.logger.warning(`Cart not found with id ${cid}`)
             res.status(404).send({ error: `no existe carrito con id: ${cid}` })
         } else {
-            res.send(cart)
+            res.status(200).send(cart)
         }
     } catch (err) {
         res.send(err)
@@ -141,9 +141,7 @@ cartRouter.delete('/:cid/product/:pid', async (req, res) => {
         let pid = req.params.pid
         // let deleteProduct = await cm.deleteProduct(parseInt(cid), parseInt(pid))
         let deleteProduct = await cartController.deleteProduct(cid, pid)
-        if(!deleteProduct){
-            res.status(404).send('carrito o producto no encontrado')
-        }
+        
         res.status(204).send(deleteProduct)
     } catch (err) {
         res.send(err)

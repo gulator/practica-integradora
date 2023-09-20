@@ -13,10 +13,6 @@ vaciarCarrito.addEventListener("click", (e) => {
   // console.log(pid)
   fetch(`/api/carts/${cid}`, {
     method: "DELETE",
-    // headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({quantity: quantity})
   }).then(() => {
     location.reload(true);
   });

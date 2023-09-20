@@ -19,6 +19,9 @@ export default class UserRepository {
     async findById(id){
         return this.dao.findById(id)
     }
+    async deleteUser(id){
+        return this.dao.deleteUser(id)
+      }
     async changepsw(newpsw, userData){
         return this.dao.changepsw(newpsw, userData)
     }

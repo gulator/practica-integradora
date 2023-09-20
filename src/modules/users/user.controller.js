@@ -25,6 +25,9 @@ class UserController {
   async findById(id) {
     return this.repository.findById(id);
   }
+  async deleteUser(id){
+    return this.repository.deleteUser(id)
+  }
 
   async changeRole (id){
     const user = await this.findById(id);
