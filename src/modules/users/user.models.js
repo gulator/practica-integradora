@@ -27,17 +27,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'user'
   },
-  carts:{
-    type:[
-      {
-        cart:{
-          type: mongoose.Schema.Types.ObjectId,
-          ref:"carts",
-        }
-      }
-    ],
+  documents:{
+    type: Array,
     default:[]
+  },
+  last_conection:{
+    type: Date
+  },
+  identificacion:{
+    type: Boolean,
+    default: false
+  },
+  domicilio:{
+    type: Boolean,
+    default: false
+  },
+  estado:{
+    type: Boolean,
+    default: false
   }
+
 });
 userSchema.pre('find', function(){
   this.populate('carts.cart')

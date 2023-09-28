@@ -1,0 +1,27 @@
+<section class="card-user-container">
+  <form
+    class="form-upload"
+    action="/api/users/{{user._id}}/documents"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <input type="file" name="archivo" id="archivo" required />
+    <select name="opcion" id="" required>Seleccione
+      <option value="">Seleccione</option>
+      <option value="identificacion">Identificacion</option>
+      <option value="domicilio">Comprobante de Domicilio</option>
+      <option value="estado">Estado de cuenta</option>
+      <option value="avatar">Avatar</option>
+      <option value="producto">Imagen de producto</option>
+    </select>
+    
+    
+    <button type="submit">Subir Archivo</button>
+    <ul>
+      <li>Extensión admitida para Identificación, Comprobante Domicilio y Estado
+        de cuenta: PDF</li>
+      <li>Extensión admitida para Avatar: PNG</li>
+      <li>Extensión admitida para Imagen de Producto: JPG, JPEG, WEBP</li>
+    </ul>
+  </form>
+</section>

@@ -28,6 +28,18 @@ class UserController {
   async deleteUser(id){
     return this.repository.deleteUser(id)
   }
+  async lastConnection (id, date){
+    await this.repository.lastConnection(id, date)
+  }
+  async uploadFileToUser(user, document){
+    const value = document.name
+    if(user[value] === true){
+      return ({status: 409, message: `file ${value} has already been uploaded for this user`})   
+    }else{
+    await this.repository.uploadFileToUser(user._id, document)
+    return ({status: 200, message: `file uploaded`})
+    }
+  }
 
   async changeRole (id){
     const user = await this.findById(id);

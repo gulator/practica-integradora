@@ -23,11 +23,6 @@ export function configSocketServer(httpServer) {
         let messageList = await messageService.getAllMessages()
         socketServer.emit('messages', messageList)
       })
-      
-  
-      // socket.on('update', (updatedProducts) => {
-      //   socketServer.emit('enviado', console.log(updatedProducts));
-      // });
     });
   
     return socketServer;

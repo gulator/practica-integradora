@@ -164,6 +164,10 @@ viewsRouter.get("/userinfo",middlewarePassportJWT,async(req,res)=>{
   const user = req.user
   res.render('current',{user})
 })
+viewsRouter.get("/documents",middlewarePassportJWT,async(req,res)=>{
+  const user = req.user
+  res.render('upload',{user})
+})
 viewsRouter.get("/resetpassword",middlewarePassportJWT,async(req,res)=>{
   const user = req.user
   res.render('newreset',{user})

@@ -21,6 +21,33 @@ export default class UserMongoDAO {
     return this.model.deleteOne({_id: id})
   }
 
+  async lastConnection (id, date){
+    return await this.model.updateOne(
+      { _id: id },
+      { $set: { last_conection: date } }
+    );
+  }
+
+  async uploadFileToUser(id, document){
+    let user = await this.model.findOne({ _id: id });
+    user.documents.push(document)
+    const valorOpcion = document.name
+    if(valorOpcion === 'identificacion'){
+      await this.model.updateOne({ _id: id }, user)
+      return await this.model.updateOne({ _id: id }, {$set: {identificacion: true }})
+    }
+    else if(valorOpcion === 'domicilio'){
+      await this.model.updateOne({ _id: id }, user)
+      return await this.model.updateOne({ _id: id }, {$set: {domicilio: true }})
+    }
+    else if(valorOpcion === 'estado'){
+      await this.model.updateOne({ _id: id }, user)
+      return await this.model.updateOne({ _id: id }, {$set: {estado: true }})
+    }else{
+      return await this.model.updateOne({ _id: id }, user)
+    }
+  }
+
   async addCartToUser(userId, cid) {
     let user = await this.model.findOne({ _id: userId });
     user.carts.push({ cart: cid });
