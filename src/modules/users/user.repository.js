@@ -37,6 +37,9 @@ export default class UserRepository {
   async changeRole(id, role) {
     return this.dao.changeRole(id, role);
   }
+  async roleChange(id, role) {
+    return this.dao.roleChange(id, role);
+  }
 
   async addCartToUser(userId, cid) {
     return await this.dao.addCartToUser(userId, cid);

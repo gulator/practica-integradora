@@ -181,5 +181,9 @@ viewsRouter.get("/changepsw/:token", async(req,res)=>{
   const user = req.user
   res.render('changepsw',{token, user})
 })
+viewsRouter.get("/userspanel", middlewarePassportJWT, async(req, res)=>{
+  const user = req.user
+  res.render('userspanel',{user})
+})
 
 export { viewsRouter };

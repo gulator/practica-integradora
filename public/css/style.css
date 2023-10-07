@@ -7,6 +7,40 @@ body {
 form {
   margin-block-end: 0;
 }
+.userspanel-container{
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.userspanel-table{
+  width: 90vw;
+  background-color: none;
+  border-radius: 3px;
+  color: #fafafa;
+}
+.userspanel-table tr{
+  height: 40px;
+  border-bottom: 1px solid rgb(245, 245, 245);
+  
+}
+.userspanel-table tbody{
+  width: 90%;
+}
+.userspanel-table td, th{
+  padding: 0px 15px;
+
+}
+.btn-inactivos{
+  width: 90vw;
+  display: flex;
+  justify-content: flex-end;
+}
+#inactivos{
+  margin: 5px;
+  height: 40px;
+  border-radius: 5px;
+}
 .login {
   height: 88%;
   display: flex;
@@ -103,7 +137,7 @@ form {
   padding: 10px;
 }
 .nav-item {
-  color: orange !important;
+  color: orange !important; 
   display: flex;
   align-items: center;
 }
@@ -295,6 +329,10 @@ td {
 }
 .id {
   visibility: hidden;
+}
+.hidden{
+  visibility: hidden;
+  width: 5px;
 }
 #chat {
   margin: 0;

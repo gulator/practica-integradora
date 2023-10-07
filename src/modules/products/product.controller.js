@@ -2,6 +2,7 @@ import ProductService from "./product.service.js";
 import ProductRepository from "./product.repository.js";
 import { initializeDaoProducts, getDaoProducts } from "./product.factory.js";
 import { productModel } from "./product.model.js";
+import MailingService from "../../config/mailing.service.js";
 await initializeDaoProducts()
 
 class ProductController {
@@ -33,13 +34,7 @@ class ProductController {
         filtro = {stock: {$gte: 0}}
       }
       let queryResult = await this.repository.getAllproducts(limit, page, sort, filtro)
-    //   if (sort === "sin"){
-        //   queryResult = await productModel.paginate(filtro, {page, limit, lean:true })
-        //   queryResult = await this.repository.getAllproducts(limit, page, sort, filtro)
-    //   }else{
-    //     //   queryResult = await productModel.paginate(filtro, {page, limit, sort:{price: sort}, lean:true })
-    //       queryResult = await this.repository.paginate(filtro, {page, limit, sort:{price: sort}, lean:true })
-    //   }
+   
       
       let links
   
@@ -74,26 +69,6 @@ class ProductController {
       }
       return {links, ...queryResult}
   
-  
-      // let queryProductos =
-      //   category !== undefined
-      //     ? await productModel.paginate(
-      //         { brand: { $in: [category] } },
-      //         { limit: limit, page: page, lean:true} //sort: {price: sort }
-      //       )
-      //     : await productModel.paginate(
-      //         {},
-      //         { limit: limit, page: page, lean:true}
-      //       );
-  
-      // let busqueda = await this.model.find().lean();
-      // let objeto = {"status": "success", "payload":queryProductos.docs, ...queryProductos}
-  
-      // return queryProductos;
-  
-      // if (limit) {
-      //     query = query.limit(limit);
-      // }
     }
   
     async getProduct(productId) {
@@ -108,7 +83,23 @@ class ProductController {
       if (!productId) {
         throw new Error("Faltan Campos");
       }
+      const producto = await this.repository.getProduct(productId)
+      if(producto[0].owner !== 'admin'){
+      let mailData = {
+        from: "Lighting Legs <gulator@gmail.com>",
+        to: `${producto[0].owner}`,
+        subject: "Producto eliminado",
+        html: `<p>Estimado:</p>
+        <p>El producto con id: ${producto[0]._id} (${producto[0].title}) ha sido eliminado del sitio Lighting Legs</p>
+        <p>Atte,</p>
+        <p>Lighting Legs Team</p>
+        `,
+      };
+      let mailService = new MailingService();
+      mailService.sendMail(mailData);
+    }
       return await this.repository.deleteProduct(productId);
+     
     }
   
     async updateProduct(productId, data) {

@@ -63,6 +63,9 @@ export default class UserMongoDAO {
   async changeRole(id, role) {
     return await this.model.updateOne({ _id: id }, { $set: { role: role } });
   }
+  async roleChange(id, role) {
+    return await this.model.updateOne({ _id: id }, { $set: { role: role } });
+  }
 }
 
 //export default UserService = new UserService()
