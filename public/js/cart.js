@@ -19,37 +19,78 @@ vaciarCarrito.addEventListener("click", (e) => {
   //   location.reload(true)
 });
 
-let cerrarCarrito = document.getElementById("cerrarCarrito");
-cerrarCarrito.addEventListener("click", (e) => {
+// let comprarCarrito = document.getElementById("comprarCarrito");
+// comprarCarrito.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   let cid = localStorage.getItem("idCarrito");
+//   fetch(`/api/users/cart/${cid}`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((datos) => {
+//       let cart = payCart()
+//       return fetch('/api/tickets/',{
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(cart)
+//       })
+//       .then((response) => response.json())
+//       .then((data)=> {
+//         console.log(data)
+//         // localStorage.removeItem('idCarrito');
+//         // window.location.href = '../../products';
+//       })
+//       .catch((err)=>{
+//         console.log('An error occurred:', err)
+//       })
+//     });
+// });
+
+let comprarCarrito = document.getElementById("comprarCarrito");
+comprarCarrito.addEventListener("click", (e) => {
   e.preventDefault();
   let cid = localStorage.getItem("idCarrito");
-  fetch(`/api/users/cart/${cid}`, {
-    method: "POST",
+  let cart = payCart()
+
+  fetch(`/api/carts/checkcart/${cid}`, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
+    // body: JSON.stringify(cart)
   })
     .then((response) => response.json())
     .then((datos) => {
-      let cart = payCart()
-      return fetch('/api/tickets/',{
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cart)
-      })
-      .then((response) => response.json())
-      .then((data)=> {
-        console.log(data)
-        // localStorage.removeItem('idCarrito');
-        // window.location.href = '../../products';
+      console.log(datos)
+      localStorage.setItem("Cart", JSON.stringify(datos))
+      window.location.href = '../../buycart';
+        // .then(()=>{
+
+        // })
+      // let cart = payCart()
+      // return fetch('/api/tickets/',{
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(cart)
+      // })
+      // .then((response) => response.json())
+      // .then((data)=> {
+      //   console.log(data)
+      //   // localStorage.removeItem('idCarrito');
+      //   // window.location.href = '../../products';
       })
       .catch((err)=>{
         console.log('An error occurred:', err)
       })
     });
-});
+// });
 
 
 function payCart(){

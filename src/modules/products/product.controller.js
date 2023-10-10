@@ -70,6 +70,10 @@ class ProductController {
       return {links, ...queryResult}
   
     }
+
+    async getAllproductsUnrestricted(){
+      return await this.repository.getAllproductsUnrestricted()
+    }
   
     async getProduct(productId) {
       return await this.repository.getProduct(productId)

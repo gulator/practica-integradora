@@ -1,8 +1,3 @@
-// const enviar = document.getElementById('enviarLogin')
-// console.log('listening')
-// // enviar.addEventListener('click',login)
-// const usuario = document.getElementById('email').value;
-// const contra = document.getElementById('password').value;
 
 function login() {
     
@@ -17,10 +12,8 @@ function login() {
 		},
         body: JSON.stringify(datos)
       })
-      .then((res) => {
-        // window.location.href = '/current';
-        window.location.href = 'http://localhost:8080/login';
-      })
+      .then((res) => {window.location.href = 'http://localhost:8080/login';})
+            
       .catch((err) => {
         console.error('Error:', err)
         alert(err)

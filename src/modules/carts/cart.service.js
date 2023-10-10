@@ -130,7 +130,7 @@ class CartService {
   //     return await this.model.updateOne( {_id: productId}, data)
   // }
 
-  async deleteCart(cartId) {
+  async emptyCart(cartId) {
     // return await this.model.deleteOne({ _id: cartId });
     return await this.model.findOneAndUpdate(
       {

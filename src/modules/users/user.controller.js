@@ -29,6 +29,9 @@ class UserController {
   async deleteUser(id){
     return this.repository.deleteUser(id)
   }
+  async activeCart(userId, idCart){
+    return this.repository.activeCart(userId, idCart)
+  }
   async deleteInactives(){
     const results = await this.repository.getAll();
     let usersInactive = 0

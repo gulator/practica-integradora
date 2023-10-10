@@ -44,6 +44,7 @@ export default class UserRouter extends MyRouter {
         if (!user) {
           res.status(401).send({ message: "User not found" });
         }
+        let activeCart =
         user = {
           _id: user._id,
           first_name: user.first_name,
@@ -52,6 +53,7 @@ export default class UserRouter extends MyRouter {
           // password: user.password,
           age: user.age,
           role: user.role,
+          activeCart: user.activeCart,         
           identificacion: user.identificacion,
           domicilio: user.domicilio,
           estado: user.estado,
@@ -76,6 +78,15 @@ export default class UserRouter extends MyRouter {
         res.status(200).send({ user: req.user, users });
       } catch (err) {
         res.status(500).send(err);
+      }
+    });
+
+    this.get('/activecart', ['USER','PREMIUM','ADMIN'], async(req, res) => {
+      try{
+        res.send({activeCart: req.user.activeCart})
+
+      }catch(err){
+        res.status(500).send(err)
       }
     });
 

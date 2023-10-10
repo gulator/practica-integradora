@@ -7,6 +7,10 @@ export default class ProductRepository{
         return await this.dao.getAllproducts(limit, page, sort, filtro)
        
       }
+
+      async getAllproductsUnrestricted(){
+        return await this.dao.getAllproductsUnrestricted()
+      }
     
       async getProduct(productId) {
         return await this.dao.getProduct(productId);

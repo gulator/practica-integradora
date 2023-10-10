@@ -17,6 +17,31 @@ class CartController {
   async getCartById(cartId) {
     return await this.service.getCartById(cartId);
   }
+  async checkCart(cartId, products) {
+    const cart = await this.service.getCartById(cartId);
+    let filteredCart = [];
+    let pending = []
+    cart[0].products.forEach((element) => {
+      products.forEach((item) => {
+        if (element.product._id.equals(item._id)) {
+          if (item.stock > 0) {
+            if (element.quantity > item.stock) {
+              const elementPending = {...element}
+              elementPending.quantity = element.quantity - item.stock
+              pending.push(elementPending)
+              element.quantity = item.stock
+              filteredCart.push(element);
+            } else {
+              filteredCart.push(element);
+          }
+          }else if (item.stock === 0){
+            pending.push(element)
+          }
+        }
+      });
+    });
+    return {filteredCart, pending}
+  }
 
   async getAllCarts() {
     return await this.service.getAllCarts();
@@ -37,7 +62,7 @@ class CartController {
 
   async editQuantity(cartId, item) {
     const isInCart = await this.service.findProduct(cartId, item);
-    
+
     if (isInCart) {
       return await this.service.editQuantity(cartId, item);
     }
@@ -91,14 +116,14 @@ class CartController {
   //     return await this.model.updateOne( {_id: productId}, data)
   // }
 
-  async deleteCart(cartId) {
+  async emptyCart(cartId) {
     // return await this.model.deleteOne({ _id: cartId });
-    return await this.service.deleteCart(cartId);
+    return await this.service.emptyCart(cartId);
   }
   async editCart(cartId, item) {
     const isInCart = await this.service.findProduct(cartId, item);
     if (isInCart) {
-      return await this.service.updateProduct(cartId, item); 
+      return await this.service.updateProduct(cartId, item);
     } else {
       return await this.service.editCart(cartId, item);
     }

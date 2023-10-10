@@ -4,6 +4,6 @@ export default class TicketRepository{
     }
 
     async createTicket (data){
-        return await this.dao.createTicket(data)
+        return await this.dao.createTicket(data) 
     }
 }

@@ -1,5 +1,7 @@
 let carrito = document.getElementById("carrito");
-carrito.addEventListener("click", () => {
+carrito.addEventListener("click", Carrito);
+
+function Carrito() {
   let cid = localStorage.getItem("idCarrito");
   if (cid) {
     fetch(`/api/carts/${cid}`)
@@ -17,14 +19,32 @@ carrito.addEventListener("click", () => {
         localStorage.setItem("idCarrito", datos.payload);
         console.log(datos);
         window.location.href = `/carts/${datos.payload}`;
-        // Handle the response data
       })
       .catch((error) => {
         console.error("Error:", error);
-        // Handle any errors
       });
   }
-});
+}
+
+function CheckCarrito() {
+  let cid = localStorage.getItem("idCarrito");
+  if (cid) {
+    fetch(`/api/carts/${cid}`)
+      .then((res) => res.json())
+      .then((productos) => {});
+  } else {
+    fetch("/api/carts", {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((datos) => {
+        localStorage.setItem("idCarrito", datos.payload);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+}
 
 let productos = document.getElementById("productos");
 productos.addEventListener("click", () => {
@@ -35,6 +55,7 @@ let agregar = document.querySelectorAll(".btn");
 for (let n of agregar) {
   n.addEventListener("click", (e) => {
     e.preventDefault();
+
     let cid = localStorage.getItem("idCarrito");
     let elemento = e.target;
     let idProducto = elemento.parentElement.children[0].children[5].innerText;
@@ -48,9 +69,9 @@ for (let n of agregar) {
     })
       .then((response) => response.json())
       .then((datos) => {
-        console.log(datos)
-        console.log(datos.status)
-        if(datos.status === 200){
+        console.log(datos);
+        console.log(datos.status);
+        if (datos.status === 200) {
           Toastify({
             text: `${datos.message}`,
             duration: 3000,
@@ -58,12 +79,12 @@ for (let n of agregar) {
             position: "right",
             style: {
               background: "linear-gradient(132deg, #F4D03F 0%, #16A085 100%)",
-              color: 'black',
-              fontWeight: 'white',
-              borderRadius: "8px"
+              color: "black",
+              fontWeight: "white",
+              borderRadius: "8px",
             },
           }).showToast();
-        }else if (datos.status === 400){
+        } else if (datos.status === 400) {
           Toastify({
             text: `${datos.message}`,
             duration: 3000,
@@ -71,13 +92,13 @@ for (let n of agregar) {
             position: "right",
             style: {
               background: "linear-gradient(147deg, #ff1b53 0%, #860000 74%)",
-              color: 'white',
-              fontWeight: 'white',
-              borderRadius: "8px"
+              color: "white",
+              fontWeight: "white",
+              borderRadius: "8px",
             },
           }).showToast();
-        }else{
-          console.log(datos)
+        } else {
+          console.log(datos);
         }
       });
   });
@@ -87,7 +108,7 @@ let borrarProducto = document.querySelectorAll(".btn-borrar");
 for (let n of borrarProducto) {
   n.addEventListener("click", (e) => {
     e.preventDefault();
-    // let cid = localStorage.getItem("idCarrito");
+
     let elemento = e.target;
     let idProducto = elemento.parentElement.children[0].children[5].innerText;
     let pid = idProducto.slice(4);
@@ -96,7 +117,7 @@ for (let n of borrarProducto) {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-      }
+      },
     })
       .then((response) => response.json())
       .then((datos) => {
@@ -113,8 +134,7 @@ for (let n of borrar) {
     let elemento = e.target;
     let pid = elemento.parentElement.parentElement.children[1].innerText;
     console.log(pid);
-    // let pid = idProducto.slice(4)
-    // console.log(pid)
+
     fetch(`/api/carts/${cid}/product/${pid}`, {
       method: "DELETE",
     }).then(() => {
@@ -148,29 +168,38 @@ for (let n of editarCantidad) {
   });
 }
 
-// let vaciarCarrito = document.querySelector(".del-carrito");
+fetch("/api/users/activecart")
+  .then((res) => res.json())
+  .then((data) => {
+    const cid = data.activeCart;
+    if (cid !== "none") {
+      fetch(`/api/carts/${cid}`)
+        .then((res) => res.json())
+        .then((productos) => {
+          localStorage.setItem("idCarrito", cid);
+        });
+    } else {
+      fetch("/api/carts", {
+        method: "POST",
+      })
+        .then((response) => response.json())
+        .then((datos) => {
+          localStorage.setItem("idCarrito", datos.payload);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  });
 
-// vaciarCarrito.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   let cid = localStorage.getItem("idCarrito");
-//   // let elemento = e.target
-//   // let pid = elemento.parentElement.parentElement.children[1].innerText
-//   // let quantity = elemento.parentElement.parentElement.children[3].children[0].value
-//   // console.log(quantity)
-//   // let pid = idProducto.slice(4)
-//   // console.log(pid)
-//   fetch(`/api/carts/${cid}`, {
-//     method: "DELETE",
-//     // headers: {
-//     //     'Content-Type': 'application/json'
-//     //   },
-//     //   body: JSON.stringify({quantity: quantity})
-//   })
-//   .then(()=>{
-//     location.reload(true)
-//   })
-//   //   location.reload(true)
-// });
+const vaciar = document.getElementById(".del-carrito");
+vaciar.addEventListener("click", (e) => {
+  e.preventDefault();
+  let cid = localStorage.getItem("idCarrito");
+  fetch(`/api/carts/${cid}`, {
+    method: "DELETE",
+  });
+});
 
 let link = "?";
 let limit = "";
@@ -178,10 +207,9 @@ let brand = "";
 let stock = "";
 let sort = "";
 
-
 let limitSelect = document.getElementById("limit-select");
 limitSelect.addEventListener("change", () => {
-  limit = `limit=${limitSelect.value}&`
+  limit = `limit=${limitSelect.value}&`;
   links();
 });
 
@@ -189,10 +217,10 @@ let brandSelect = document.getElementById("brand-select");
 brandSelect.addEventListener("change", () => {
   if (brandSelect.value === "none") {
     brand = "";
-    links()
+    links();
   } else {
     brand = `brand=${brandSelect.value}&`;
-    links()
+    links();
   }
 });
 
@@ -200,10 +228,10 @@ let stockSelect = document.getElementById("stock-select");
 stockSelect.addEventListener("change", () => {
   if (stockSelect.value === "none") {
     stock = "";
-    links()
+    links();
   } else {
     stock = `stock=${stockSelect.value}&`;
-    links()
+    links();
   }
 });
 
@@ -211,34 +239,31 @@ let sortSelect = document.getElementById("sort-select");
 sortSelect.addEventListener("change", () => {
   if (sortSelect.value === "none") {
     sort = "";
-    links()
+    links();
   } else {
     sort = `sort=${sortSelect.value}&`;
-    links()
+    links();
   }
 });
 
-function links (){
-  let page = document.getElementById('current-page').innerText;
-  if (limit.length > 0){
-    link= link + limit
+function links() {
+  let page = document.getElementById("current-page").innerText;
+  if (limit.length > 0) {
+    link = link + limit;
   }
-  if (brand.length > 0){
-    link= link + brand
+  if (brand.length > 0) {
+    link = link + brand;
   }
-  if (stock.length > 0){
-    link= link + stock
+  if (stock.length > 0) {
+    link = link + stock;
   }
-  if (sort.length > 0){
-    link= link + sort
+  if (sort.length > 0) {
+    link = link + sort;
   }
-  link = link + `page=${page}`
-  
+  link = link + `page=${page}`;
 }
 
-let filtrar = document.getElementById('filters')
-filtrar.addEventListener('click', ()=>{
+let filtrar = document.getElementById("filters");
+filtrar.addEventListener("click", () => {
   window.location.href = `/products/${link}`;
-})
-
-
+});

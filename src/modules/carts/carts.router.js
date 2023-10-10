@@ -3,6 +3,7 @@ import CartManager from "./cartManager.js";
 import cartService from "./cart.service.js";
 import cartController from "./cart.controller.js";
 import productController from "../products/product.controller.js";
+import userController from "../users/user.controller.js";
 
 const cm = new CartManager('./cart.json')
 
@@ -12,6 +13,8 @@ cartRouter.post('/', async (req, res) => {
     try {
         //res.status(201).send(await cm.addCart())
         let newCart = await cartController.addCart()
+        await userController.activeCart(req.user._id, newCart._id)
+        req.user.activeCart = newCart._id
         req.logger.info(`Cart created with id: ${newCart._id}`)
         res.status(201).send({payload: newCart._id})
     }
@@ -29,6 +32,12 @@ cartRouter.get('/', async (req, res)=>{
     }
 })
 
+cartRouter.post('/buycart', async(req,res) =>{
+    const user = req.user
+    const products = req.body.filteredCart
+    console.log(products)
+    res.render('buycart',{user, products})
+})
 cartRouter.get('/:cid', async (req, res) => {
     try {
         let cid = req.params.cid
@@ -44,6 +53,13 @@ cartRouter.get('/:cid', async (req, res) => {
         res.send(err)
     }
 })
+cartRouter.get('/checkcart/:cid',async(req,res)=>{
+    let cid = req.params.cid
+    let products = await productController.getAllproductsUnrestricted()
+    let checkedCart = await cartController.checkCart(cid, products)
+    res.send (checkedCart)
+})
+
 
 cartRouter.put ('/:cid', async (req, res)=>{
     try{
@@ -63,11 +79,11 @@ cartRouter.put ('/:cid', async (req, res)=>{
 cartRouter.delete('/:cid', async (req, res) => {
     try{
         let cid = req.params.cid
-        let deletedCart = await cartController.deleteCart(cid)
-        if(!deletedCart){
+        let emptiedCart = await cartController.emptyCart(cid)
+        if(!emptiedCart){
             res.status(400).send('Carrito no encontrado')
         }
-        res.status(204).send(deletedCart)
+        res.send()
     }catch(err){
         res.status(500).send(err)
     }

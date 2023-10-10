@@ -21,6 +21,10 @@ export default class UserMongoDAO {
     return this.model.deleteOne({_id: id})
   }
 
+  async activeCart(userId, idCart){
+    return this.model.updateOne({ _id: userId }, {$set: {activeCart: idCart }})
+  }
+
   async lastConnection (id, date){
     return await this.model.updateOne(
       { _id: id },

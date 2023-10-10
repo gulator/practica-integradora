@@ -34,10 +34,10 @@
               href="#"
             >Productos</a>
           </li>
+          {{#if user}}
           <li class="nav-item">
             <a class="nav-link" id="carrito" href="#">Carrito</a>
           </li>
-          {{#if user}}
             {{#ifEquals user.role 'premium'}}
               <li class="nav-item">
                 <a class="nav-link" href="/newproduct" id="newproduct">New

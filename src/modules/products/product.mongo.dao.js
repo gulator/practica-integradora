@@ -17,6 +17,10 @@ export default class ProductMongoDAO {
    
   }
 
+  async getAllproductsUnrestricted(){
+    return await this.model.find({}, {_id: 1, stock: 1})
+  }
+
   async getProduct(productId) {
     return await this.model.find({ _id: productId });
   }

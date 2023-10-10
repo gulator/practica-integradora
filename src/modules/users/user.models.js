@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     ],
     default:[]
   },
+  activeCart:{
+    type: String,
+    default: 'none'
+  },
   documents:{
     type: Array,
     default:[]

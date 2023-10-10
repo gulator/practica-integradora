@@ -176,6 +176,12 @@ viewsRouter.get("/newproduct",middlewarePassportJWT,async(req,res)=>{
   const user = req.user
   res.render('newproduct',{user})
 })
+
+viewsRouter.get("/buycart",middlewarePassportJWT,async(req,res)=>{
+  const user = req.user
+  res.render('buycart',{user})
+})
+
 viewsRouter.get("/changepsw/:token", async(req,res)=>{
   let token = req.params.token
   const user = req.user

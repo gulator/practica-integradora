@@ -22,6 +22,9 @@ export default class UserRepository {
   async deleteUser(id) {
     return this.dao.deleteUser(id);
   }
+  async activeCart(userId, idCart){
+    return this.dao.activeCart(userId, idCart)
+  }
 
   async lastConnection(id, date) {
     await this.dao.lastConnection(id, date);
