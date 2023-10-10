@@ -142,6 +142,11 @@ class CartService {
       { new: true }
     );
   }
+
+  async eraseCart (cartId){
+    return await this.model.deleteOne({ _id: cartId });
+  }
+
   async editCart(cartId, item) {
     
       let cart = await this.model.findOne({ _id: cartId });

@@ -63,7 +63,7 @@ export default class UserRouter extends MyRouter {
         const token = generateToken(user);
         req.logger.info(
           `user ${user._id} logged in - ${new Date().toLocaleString()}`
-        );
+        ); 
         res
           .cookie("token", token, {
             httpOnly: true,
@@ -83,7 +83,8 @@ export default class UserRouter extends MyRouter {
 
     this.get('/activecart', ['USER','PREMIUM','ADMIN'], async(req, res) => {
       try{
-        res.send({activeCart: req.user.activeCart})
+        let user = await userController.findById(req.user._id)
+        res.send({activeCart: user.activeCart})
 
       }catch(err){
         res.status(500).send(err)

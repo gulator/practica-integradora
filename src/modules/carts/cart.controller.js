@@ -120,7 +120,15 @@ class CartController {
     // return await this.model.deleteOne({ _id: cartId });
     return await this.service.emptyCart(cartId);
   }
-  async editCart(cartId, item) {
+
+  async eraseCart(cartId) {
+    // return await this.model.deleteOne({ _id: cartId });
+    return await this.service.eraseCart(cartId);
+  }
+
+  async editCart(cartId, item) {     
+
+
     const isInCart = await this.service.findProduct(cartId, item);
     if (isInCart) {
       return await this.service.updateProduct(cartId, item);
