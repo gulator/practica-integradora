@@ -7,7 +7,7 @@ function Carrito() {
     fetch(`/api/carts/${cid}`)
       .then((res) => res.json())
       .then((productos) => {
-        console.log(productos);
+        // console.log(productos);
       });
     window.location.href = `/carts/${cid}`;
   } else {
@@ -17,7 +17,6 @@ function Carrito() {
       .then((response) => response.json())
       .then((datos) => {
         localStorage.setItem("idCarrito", datos.payload);
-        console.log(datos);
         window.location.href = `/carts/${datos.payload}`;
       })
       .catch((error) => {
@@ -69,8 +68,6 @@ for (let n of agregar) {
     })
       .then((response) => response.json())
       .then((datos) => {
-        console.log(datos);
-        console.log(datos.status);
         if (datos.status === 200) {
           Toastify({
             text: `${datos.message}`,
@@ -97,8 +94,6 @@ for (let n of agregar) {
               borderRadius: "8px",
             },
           }).showToast();
-        } else {
-          console.log(datos);
         }
       });
   });
@@ -120,9 +115,7 @@ for (let n of borrarProducto) {
       },
     })
       .then((response) => response.json())
-      .then((datos) => {
-        console.log(datos);
-      });
+      .then((datos) => {});
   });
 }
 
@@ -133,7 +126,6 @@ for (let n of borrar) {
     let cid = localStorage.getItem("idCarrito");
     let elemento = e.target;
     let pid = elemento.parentElement.parentElement.children[1].innerText;
-    console.log(pid);
 
     fetch(`/api/carts/${cid}/product/${pid}`, {
       method: "DELETE",
@@ -152,7 +144,6 @@ for (let n of editarCantidad) {
     let pid = elemento.parentElement.parentElement.children[1].innerText;
     let quantity =
       elemento.parentElement.parentElement.children[3].children[0].value;
-    console.log(quantity);
     // let pid = idProducto.slice(4)
     // console.log(pid)
     fetch(`/api/carts/${cid}/products/${pid}`, {

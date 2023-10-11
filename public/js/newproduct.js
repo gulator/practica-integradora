@@ -26,6 +26,5 @@ btnProduct.addEventListener("click", () => {
   })
       .then((res)=>res.json())
       .then((data)=>{
-        console.log(data)
   })
 });

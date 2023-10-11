@@ -36,7 +36,7 @@ class CartService {
       _id: cartId,
       "products.product": { $in: [productId] },
     });
-    
+
     return isInCart;
   }
 
@@ -53,14 +53,6 @@ class CartService {
     );
   }
   async addProduct(cartId, item) {
-    // if (!cartId || !item) {
-    // throw new Error ('one or both required fields are missing')
-    // }
-    // else{
-    // const isInCart = await cartModel.findOne({
-    //   _id: cartId,
-    //   "products.product": { $in: [item.pid] },
-    // });
     let cart = await this.model.findOne({ _id: cartId });
     cart.products.push({ product: item.pid, quantity: item.quantity });
     return await this.model.updateOne({ _id: cartId }, cart);
@@ -77,36 +69,7 @@ class CartService {
       },
       { new: true }
     );
-
-    // else {
-    //   let cart = await cartModel.findOne({ _id: cartId });
-    //   cart.products.push({ product: item.pid, quantity: item.quantity });
-    //   return await cartModel.updateOne({ _id: cartId }, cart);
-    // }
   }
-
-  //}
-  //const cartObjectId = mongoose.Types.ObjectId(cartId)
-  //let valor = this.model.updateOne({"_id":cartObjectId}, {$push:{"products":product}})
-  // console.log(valor)
-  // return await this.model.updateOne({"_id":cartObjectId}, {$push:{"products":product}})
-
-  // async getAllproducts(limit){
-
-  //     let query = this.model.find();
-  // if (limit) {
-  //     query = query.limit(limit);
-  // }
-  // return await query.lean();
-  // }
-
-  // async getProduct(productId){
-  //     return await this.model.find({_id: productId})
-  // }
-
-  // async addProduct(product){
-  //     return await this.model.create(product)
-  // }
 
   async deleteProduct(cartId, productId) {
     const cart = await this.model.findOneAndUpdate(
@@ -117,21 +80,7 @@ class CartService {
     return cart;
   }
 
-  //     if (!productId){
-  //         throw new Error('Faltan Campos')
-  //     }
-  //     return await this.model.deleteOne( { _id: productId})
-  // }
-
-  // async updateProduct (productId, data){
-  //     if (!productId){
-  //         throw new Error('Faltan Campos')
-  //     }
-  //     return await this.model.updateOne( {_id: productId}, data)
-  // }
-
   async emptyCart(cartId) {
-    // return await this.model.deleteOne({ _id: cartId });
     return await this.model.findOneAndUpdate(
       {
         _id: cartId,
@@ -143,19 +92,15 @@ class CartService {
     );
   }
 
-  async eraseCart (cartId){
+  async eraseCart(cartId) {
     return await this.model.deleteOne({ _id: cartId });
   }
 
   async editCart(cartId, item) {
-    
-      let cart = await this.model.findOne({ _id: cartId });
-      cart.products.push({ product: item.pid, quantity: item.quantity });
-      return await this.model.updateOne({ _id: cartId }, cart);
-    }
+    let cart = await this.model.findOne({ _id: cartId });
+    cart.products.push({ product: item.pid, quantity: item.quantity });
+    return await this.model.updateOne({ _id: cartId }, cart);
   }
-
-
-// const cartService = new CartService();
+}
 
 export default CartService;

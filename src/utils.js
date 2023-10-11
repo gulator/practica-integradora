@@ -13,8 +13,7 @@ export {products}
 export function configSocketServer(httpServer) {
     const socketServer = new Server(httpServer);
   
-    socketServer.on('connection', async (socket) => {
-      console.log('nuevo usuario conectado'); 
+    socketServer.on('connection', async (socket) => {     
       let messageList = await messageService.getAllMessages()
       socket.emit('messages', messageList)
       socket.on('message', async (msj)=>{

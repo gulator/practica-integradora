@@ -10,7 +10,7 @@ const cm = new CartManager("./cart.json");
 const cartRouter = Router();
 
 cartRouter.post("/", async (req, res) => {
-  try {    
+  try {
     let newCart = await cartController.addCart();
     await userController.activeCart(req.user._id, newCart._id);
     req.user.activeCart = newCart._id;
@@ -24,9 +24,8 @@ cartRouter.post("/", async (req, res) => {
 cartRouter.post("/pending", async (req, res) => {
   try {
     let products = req.body;
-    const pendientes = products.pending.pending;    
+    const pendientes = products.pending.pending;
     if (pendientes.length > 0) {
-      
       let newCart = await cartController.addCart();
       req.logger.info(`Cart created with id: ${newCart._id}`);
 
@@ -42,14 +41,16 @@ cartRouter.post("/pending", async (req, res) => {
       await userController.activeCart(req.user._id, newCart._id);
       req.user.activeCart = newCart._id;
 
-      res.send({ status: 201, msg: "carrito con pendientes creado", carrito: newCart._id });
-
+      res.send({
+        status: 201,
+        msg: "carrito con pendientes creado",
+        carrito: newCart._id,
+      });
     } else {
       await userController.activeCart(req.user._id, "none");
       req.user.activeCart = "none";
       res.send({ status: 200, msg: "no se creo carrito con pendientes" });
     }
-    //res.status(201).send(await cm.addCart())
   } catch (err) {
     res.send(err);
   }
@@ -72,14 +73,13 @@ cartRouter.post("/buycart", async (req, res) => {
 cartRouter.get("/:cid", async (req, res) => {
   try {
     let cid = req.params.cid;
-    //let cart = await cm.getCartById(cid)
     let cart = await cartController.getCartById(cid);
     if (!cart) {
       req.logger.warning(`Cart not found with id ${cid}`);
       res.status(404).send({ error: `no existe carrito con id: ${cid}` });
     } else {
       res.status(200).send(cart);
-    }
+    } 
   } catch (err) {
     res.send(err);
   }
@@ -136,31 +136,10 @@ cartRouter.delete("/:cid", async (req, res) => {
 
 cartRouter.delete("/erasecart/:cid", async (req, res) => {
   let cid = req.params.cid;
-  //   let result = await cartController.eraseCart(cid);
-  //   res.send(result);
-  console.log("carrito borrado");
+  let result = await cartController.eraseCart(cid);
+  res.send(result);
   res.send({ status: 202, msg: "carrito borrado" });
 });
-
-// cartRouter.post('/:cid/product/:pid', async (req, res) => {
-//     try {
-//         let cid = req.params.cid
-//         let pid = req.params.pid
-//         let cuerpo = { "product": parseInt(pid), "quantity": req.body.quantity }
-
-//         let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
-//         if (addedProduct === 404) {
-//             res.status(404).send({ error: "El producto no existe" })
-//         } else if (!addedProduct) {
-//             res.status(404).send({ error: "Carrito inexistente" })
-//         } else {
-//             res.send(addedProduct)
-//         }
-//     }
-//     catch (err) {
-//         res.send(err)
-//     }
-// })
 
 cartRouter.post("/:cid/product/:pid", async (req, res) => {
   try {
@@ -174,7 +153,13 @@ cartRouter.post("/:cid/product/:pid", async (req, res) => {
         status: 400,
         message: "No se puede agregar un producto creado por usted",
       });
-    } else {
+    } else if (req.user.role === 'admin'){
+      res.send({
+        status: 400,
+        message: "Admins no pueden agregar productos al carrito",
+      });
+    }
+    else {
       let producto = { pid: pid, quantity: req.body.quantity };
       //let addedProduct = await cm.addProduct(parseInt(cid), cuerpo)
       let addedProduct = await cartController.addProduct(cid, producto);

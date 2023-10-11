@@ -40,7 +40,7 @@ export const authToken = (req, res, next) => {
     if (err) {
       // res.status(401).send({message: 'Token not valid'})
     }
-    // console.log('credenciales:', credentials)
+    
     req.user = credentials;
     next();
   });
@@ -53,9 +53,7 @@ export const middlewarePassportJWT = async (req, res, next) => {
 
     if (!usr) {
       res.redirect("/login");
-      // res.status(401).send({
-      // 	message: info.messages ? info.messages : info.toString(),
-      // });
+      
     }
 
     req.user = usr;

@@ -152,7 +152,6 @@ viewsRouter.get("/login", isLogged, (req, res) => {
     let error = req.session.error
     if(req.session.error){
         req.logger.error('error de sesion')
-        // console.log(error)
         delete req.session.error
     }
   res.render("login", {error});

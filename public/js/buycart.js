@@ -61,7 +61,6 @@ finishBtn
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.status === 201) {
           Toastify({
             text: `Su compra ${data.ticket._id} ha sido efectuada y se encuentra en preparación`,

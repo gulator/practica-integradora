@@ -12,7 +12,7 @@ function login() {
 		},
         body: JSON.stringify(datos)
       })
-      .then((res) => {window.location.href = 'http://localhost:8080/login';})
+      .then((res) => {window.location.href = '/products';})
             
       .catch((err) => {
         console.error('Error:', err)

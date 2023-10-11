@@ -17,8 +17,7 @@ function register() {
       })
       .then((res) => res.json())
       .then((data)=> {
-        console.log(data)
-          window.location.href = 'http://localhost:8080/';
+          window.location.href = '/';
       })
 
         // window.location.href = '/current';

@@ -53,7 +53,6 @@ export default class CartManager {
         const cart = cartList.findIndex((item) => item.id == idCart)
         if (cart !== -1){
             const productIndex = cartList[cart].products.findIndex((item) => item.product == idProduct)
-            console.log(productIndex)
             if (productIndex !== -1){
                 cartList[cart].products.splice(productIndex, 1);
                 await fs.promises.writeFile(this.path, JSON.stringify(cartList));

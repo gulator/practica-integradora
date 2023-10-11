@@ -89,6 +89,5 @@ fetch("../api/users")
       alert("Error 500");
     } else {
       alert("otro error");
-      console.log("data:", data);
     }
   });

@@ -1,16 +1,9 @@
-// import { response } from "express";
 
 let vaciarCarrito = document.querySelector(".del-carrito");
 
 vaciarCarrito.addEventListener("click", (e) => {
   e.preventDefault();
   let cid = localStorage.getItem("idCarrito");
-  // let elemento = e.target
-  // let pid = elemento.parentElement.parentElement.children[1].innerText
-  // let quantity = elemento.parentElement.parentElement.children[3].children[0].value
-  // console.log(quantity)
-  // let pid = idProducto.slice(4)
-  // console.log(pid)
   fetch(`/api/carts/${cid}`, {
     method: "DELETE",
   }).then(() => {
@@ -18,8 +11,6 @@ vaciarCarrito.addEventListener("click", (e) => {
   });
   //   location.reload(true)
 });
-
-// let comprarCarrito = document.getElementById("comprarCarrito");
 // comprarCarrito.addEventListener("click", (e) => {
 //   e.preventDefault();
 //   let cid = localStorage.getItem("idCarrito");
@@ -66,25 +57,9 @@ comprarCarrito.addEventListener("click", (e) => {
   })
     .then((response) => response.json())
     .then((datos) => {
-      console.log(datos)
       localStorage.setItem("Cart", JSON.stringify(datos))
       window.location.href = '../../buycart';
-        // .then(()=>{
-
-        // })
-      // let cart = payCart()
-      // return fetch('/api/tickets/',{
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(cart)
-      // })
-      // .then((response) => response.json())
-      // .then((data)=> {
-      //   console.log(data)
-      //   // localStorage.removeItem('idCarrito');
-      //   // window.location.href = '../../products';
+       
       })
       .catch((err)=>{
         console.log('An error occurred:', err)
@@ -112,10 +87,7 @@ for (let row of rows) {
   const price = parseFloat(priceCell.textContent.replace("$", ""));
   
   products.push({"product":productId, "quantity":quantity, "amount":quantity*price})
-  // Calculate the product of quantity and price
-  // const total = quantity * price;
-  // amount = amount + total  
-  
+    
 }
 return ({"purchase_datetime": date, "amount":amount, "products":products})
 }
