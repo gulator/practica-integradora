@@ -1,14 +1,10 @@
 import MyRouter from "../../routes/router.js";
 import ticketController from "./ticket.controller.js";
 import MailingService from "../../config/mailing.service.js";
-// import { generateToken } from "../../middlewares/jwt.middleware.js";
 import passport from "passport";
 import config from "../../config/config.js";
 
-// import UserFactory from "./user.factory.js";
 import jwt from "jsonwebtoken";
-
-// let userController = new UserFactory ()
 
 export default class TicketRouter extends MyRouter {
   init() {

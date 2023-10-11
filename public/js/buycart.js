@@ -43,15 +43,7 @@ finishBtn
     });
     let cid = localStorage.getItem("idCarrito");
     let amount = total.reduce((a, b) => (a = a + b));
-    //   fetch(`/api/users/cart/${cid}`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   let cart = payCart();
+    
     fetch("/api/tickets/", {
       method: "POST",
       headers: {

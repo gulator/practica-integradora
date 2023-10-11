@@ -137,7 +137,6 @@ cartRouter.delete("/:cid", async (req, res) => {
 cartRouter.delete("/erasecart/:cid", async (req, res) => {
   let cid = req.params.cid;
   let result = await cartController.eraseCart(cid);
-  res.send(result);
   res.send({ status: 202, msg: "carrito borrado" });
 });
 

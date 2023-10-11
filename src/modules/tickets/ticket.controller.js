@@ -20,10 +20,10 @@ class TicketController {
       let productAmount = await this.repositoryProducts.getProduct(
         item.product
       );
-      // let newStock = productAmount[0].stock - item.quantity;
-      //   await this.repositoryProducts.updateProduct(item.product, {
-      //     stock: newStock,
-      //   });
+      let newStock = productAmount[0].stock - item.quantity;
+        await this.repositoryProducts.updateProduct(item.product, {
+          stock: newStock,
+        });
       
     }
     const newData = {purchaser: data.purchaser, products: data.products, amount: data.amount, purchase_datetime: new Date () };
