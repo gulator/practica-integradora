@@ -17,7 +17,7 @@ function register() {
       })
       .then((res) => res.json())
       .then((data)=> {
-          window.location.href = '/';
+          window.location.href = '/login';
       })
 
         // window.location.href = '/current';
