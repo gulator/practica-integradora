@@ -115,7 +115,9 @@ for (let n of borrarProducto) {
       },
     })
       .then((response) => response.json())
-      .then((datos) => {});
+      .then((datos) => {
+        location.reload(true);
+      });
   });
 }
 

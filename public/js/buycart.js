@@ -43,7 +43,8 @@ finishBtn
     });
     let cid = localStorage.getItem("idCarrito");
     let amount = total.reduce((a, b) => (a = a + b));
-    
+    let spinner = document.getElementById('spinner')
+    spinner.className = "spinner-border text-warning"
     fetch("/api/tickets/", {
       method: "POST",
       headers: {
@@ -111,7 +112,7 @@ finishBtn
                     .then((res) => res.json())
                     .then((data) => {
                       const storage = localStorage.getItem("Cart");
-
+                      
                       fetch(`/api/carts/pending`, {
                         method: "POST",
                         headers: {
@@ -122,6 +123,8 @@ finishBtn
                         .then((res) => res.json())
                         .then((data) => {
                           setTimeout(()=>{
+                            let spinner = document.getElementById('spinner')
+                            spinner.className = "spinner-border text-warning hidden"
                               localStorage.removeItem("Cart");
                               localStorage.removeItem("idCarrito");
                               localStorage.setItem("idCarrito", data.carrito);

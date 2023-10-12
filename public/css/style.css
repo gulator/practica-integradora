@@ -416,7 +416,7 @@ td {
   flex-direction: column;
   align-items: center;
   width: 80vw;
-  height: 70vh;
+  /* height: 70vh; */
 }
 .container-ticket p{
   font-size: 12px;
@@ -442,12 +442,13 @@ td {
 }
 
 .ticket-container{
+  margin-top: 30px;
   width: 100vw;
   height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .centered{
   text-align: center;

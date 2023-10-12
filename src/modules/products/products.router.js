@@ -87,7 +87,7 @@ export default class ProductRouter extends MyRouter {
               value.owner
             } on ${new Date().toLocaleString()}`
           );
-          res.status(201).send(value);
+          res.status(201).send({status: 201, value});
         }
       } catch (err) {
         res.send(err);
